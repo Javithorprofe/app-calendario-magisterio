@@ -604,6 +604,20 @@ textarea.mf-input {
   font-weight: 700;
 }
 
+.date-select {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.date-select .mf-input {
+  margin-top: 0;
+}
+
+.date-select .ds-dia { flex: 0 0 58px; }
+.date-select .ds-mes { flex: 1.7; }
+.date-select .ds-anio { flex: 0 0 78px; }
+
 input[type="color"].mf-input {
   padding: 4px;
   height: 42px;

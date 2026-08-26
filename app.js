@@ -342,7 +342,7 @@ function wireHorarioControls() {
   document.getElementById("weekPrev").addEventListener("click", irSemanaAnterior);
   document.getElementById("weekNext").addEventListener("click", irSemanaSiguiente);
   document.getElementById("weekToday").addEventListener("click", irSemanaActual);
-  wireSwipe(document.querySelector(".week-nav"), irSemanaSiguiente, irSemanaAnterior);
+  wireSwipe(document.getElementById("view-horario"), irSemanaSiguiente, irSemanaAnterior);
   document.querySelectorAll(".class-block").forEach(blk => {
     blk.addEventListener("click", () => {
       const item = DATA.horario.find(x => x.id === blk.dataset.id);
@@ -645,7 +645,7 @@ function renderNotas() {
 const FORM_FIELDS = {
   examenes: [
     { key: "asignatura", label: "Asignatura", type: "select", options: ASIGNATURAS.map(a => a.nombre) },
-    { key: "fecha", label: "Fecha", type: "date" },
+    { key: "fecha", label: "Fecha", type: "dateselect" },
     { key: "hora", label: "Hora", type: "timeselect", optional: true },
     { key: "aula", label: "Aula", type: "text", optional: true },
     { key: "notas", label: "Notas", type: "textarea", optional: true }
@@ -653,7 +653,7 @@ const FORM_FIELDS = {
   trabajos: [
     { key: "asignatura", label: "Asignatura", type: "select", options: ASIGNATURAS.map(a => a.nombre) },
     { key: "titulo", label: "Título", type: "text" },
-    { key: "fechaEntrega", label: "Fecha de entrega", type: "date" },
+    { key: "fechaEntrega", label: "Fecha de entrega", type: "dateselect" },
     { key: "notas", label: "Notas", type: "textarea", optional: true }
   ]
 };
@@ -693,6 +693,39 @@ function readTimeSelect(idPrefix) {
   return (h && m) ? `${h}:${m}` : "";
 }
 
+function dateSelectHtml(idPrefix, value) {
+  const [y, m, d] = (value || "").split("-");
+  const inicioAno = cursoInicioAno();
+  const anios = [inicioAno - 1, inicioAno, inicioAno + 1, inicioAno + 2];
+  const dias = Array.from({ length: 31 }, (_, i) => pad2(i + 1));
+  return `
+    <div class="date-select">
+      <select class="mf-input ds-dia" id="${idPrefix}Dia">
+        <option value="">Día</option>
+        ${dias.map(dd => `<option value="${dd}" ${dd === d ? "selected" : ""}>${dd}</option>`).join("")}
+      </select>
+      <select class="mf-input ds-mes" id="${idPrefix}Mes">
+        <option value="">Mes</option>
+        ${MESES_NOMBRE.slice(1).map((nombre, i) => {
+          const mm = pad2(i + 1);
+          return `<option value="${mm}" ${mm === m ? "selected" : ""}>${nombre}</option>`;
+        }).join("")}
+      </select>
+      <select class="mf-input ds-anio" id="${idPrefix}Anio">
+        <option value="">Año</option>
+        ${anios.map(yy => `<option value="${yy}" ${String(yy) === y ? "selected" : ""}>${yy}</option>`).join("")}
+      </select>
+    </div>
+  `;
+}
+
+function readDateSelect(idPrefix) {
+  const d = document.getElementById(idPrefix + "Dia").value;
+  const m = document.getElementById(idPrefix + "Mes").value;
+  const y = document.getElementById(idPrefix + "Anio").value;
+  return (d && m && y) ? `${y}-${m}-${d}` : "";
+}
+
 function horarioFieldsHtml(item) {
   const repite = (item && item.repite) || "semanal";
   const dia = (item && item.dia) || DIAS_ORDEN[0];
@@ -720,11 +753,11 @@ function horarioFieldsHtml(item) {
       </label>
     </div>
     <div id="hGroupFecha" class="mf-group">
-      <label class="mf-label">Fecha<input class="mf-input" type="date" id="hFecha" value="${fecha}"></label>
+      <label class="mf-label">Fecha${dateSelectHtml("hFecha", fecha)}</label>
     </div>
     <div id="hGroupFechaRef" class="mf-group">
       <label class="mf-label">Una fecha en la que SÍ toque esta clase (para saber qué semanas le tocan)
-        <input class="mf-input" type="date" id="hFechaRef" value="${fechaRef}">
+        ${dateSelectHtml("hFechaRef", fechaRef)}
       </label>
     </div>
     <label class="mf-label">Hora de inicio${timeSelectHtml("hInicio", inicio)}</label>
@@ -783,6 +816,9 @@ function openModal(kind, item) {
       if (f.type === "timeselect") {
         return `<label class="mf-label">${f.label}${timeSelectHtml("f_" + f.key, val)}</label>`;
       }
+      if (f.type === "dateselect") {
+        return `<label class="mf-label">${f.label}${dateSelectHtml("f_" + f.key, val)}</label>`;
+      }
       return `<label class="mf-label">${f.label}<input class="mf-input" type="${f.type}" data-key="${f.key}" value="${escapeAttr(val)}"></label>`;
     }).join("");
   }
@@ -821,14 +857,14 @@ function saveHorarioModal() {
   };
 
   if (repite === "puntual") {
-    const fecha = document.getElementById("hFecha").value;
+    const fecha = readDateSelect("hFecha");
     if (!fecha) { alert("Elige la fecha de esta clase puntual."); return; }
     update[`horario.${useId}.fecha`] = fecha;
   } else {
     const dia = document.getElementById("hDia").value;
     update[`horario.${useId}.dia`] = dia;
     if (repite === "quincenal") {
-      const fechaRef = document.getElementById("hFechaRef").value;
+      const fechaRef = readDateSelect("hFechaRef");
       if (!fechaRef) { alert("Indica una fecha en la que sí toque esta clase, para saber qué semanas son."); return; }
       update[`horario.${useId}.fechaRef`] = fechaRef;
     }
@@ -845,8 +881,8 @@ function saveModal() {
   let faltan = [];
 
   fields.forEach(f => {
-    const val = f.type === "timeselect"
-      ? readTimeSelect("f_" + f.key)
+    const val = f.type === "timeselect" ? readTimeSelect("f_" + f.key)
+      : f.type === "dateselect" ? readDateSelect("f_" + f.key)
       : document.querySelector(`#modalFields [data-key="${f.key}"]`).value.trim();
     if (!f.optional && !val) faltan.push(f.label);
     values[f.key] = val;
