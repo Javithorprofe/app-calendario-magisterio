@@ -249,6 +249,205 @@ section.view.active { display: block; }
   font-size: .9rem;
 }
 
+/* Calendario semanal */
+.week-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.week-header, .week-body {
+  display: grid;
+}
+
+.week-header {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  z-index: 2;
+}
+
+.week-header .corner {
+  border-right: 1px solid var(--border);
+}
+
+.week-header .day-head {
+  text-align: center;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-dim);
+  padding: 10px 4px;
+  border-left: 1px solid var(--border);
+}
+
+.week-header .day-head.today {
+  color: var(--accent);
+}
+
+.time-col {
+  position: sticky;
+  left: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  z-index: 1;
+}
+
+.time-col .slot {
+  height: 56px;
+  font-size: .65rem;
+  color: var(--text-dim);
+  text-align: right;
+  padding-right: 6px;
+  transform: translateY(-7px);
+}
+
+.day-col {
+  position: relative;
+  border-left: 1px solid var(--border);
+  background-image: repeating-linear-gradient(to bottom, var(--border) 0, var(--border) 1px, transparent 1px, transparent 56px);
+}
+
+.day-col.today {
+  background-color: rgba(99, 102, 241, .05);
+}
+
+.class-block {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  border-radius: 8px;
+  padding: 4px 6px;
+  color: #fff;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+}
+
+.class-block .cb-title {
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.class-block .cb-meta {
+  font-size: .62rem;
+  opacity: .9;
+  margin-top: 1px;
+}
+
+.now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--danger);
+  z-index: 3;
+}
+
+.now-line::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+}
+
+/* Notas */
+.grade-pill {
+  font-size: .78rem;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.grade-pill.good { background: rgba(16,185,129,.15); color: var(--ok); }
+.grade-pill.mid { background: rgba(245,158,11,.15); color: var(--warn); }
+.grade-pill.bad { background: rgba(239,68,68,.15); color: var(--danger); }
+
+.notas-summary {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.notas-summary .ns-item {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.notas-summary .ns-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.notas-summary .ns-label {
+  font-size: .7rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.notas-list {
+  margin-top: 14px;
+}
+
+.nota-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow);
+}
+
+.nota-card .info { flex: 1; min-width: 0; }
+
+.nota-card .titulo {
+  font-weight: 600;
+  font-size: .93rem;
+}
+
+.nota-card .meta {
+  color: var(--text-dim);
+  font-size: .8rem;
+  margin-top: 2px;
+}
+
+.nota-input {
+  width: 56px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 8px 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.notas-hint {
+  margin-top: 14px;
+  font-size: .78rem;
+  color: var(--text-dim);
+  text-align: center;
+  padding: 0 8px;
+}
+
 /* Bottom nav (mobile) */
 nav.bottom {
   position: fixed;
