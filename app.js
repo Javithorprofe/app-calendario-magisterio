@@ -960,8 +960,22 @@ function setupTabs() {
   });
 }
 
+function setupStylePreview() {
+  const saved = localStorage.getItem("magisterio_style_preview") || "";
+  document.documentElement.dataset.style = saved;
+  document.querySelectorAll(".style-swatch").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.style === saved);
+    btn.addEventListener("click", () => {
+      document.documentElement.dataset.style = btn.dataset.style;
+      localStorage.setItem("magisterio_style_preview", btn.dataset.style);
+      document.querySelectorAll(".style-swatch").forEach(b => b.classList.toggle("active", b === btn));
+    });
+  });
+}
+
 setupTabs();
 setupModal();
+setupStylePreview();
 render();
 
 if ("serviceWorker" in navigator) {
