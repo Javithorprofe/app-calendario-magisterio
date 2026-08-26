@@ -3,7 +3,30 @@ import { getFirestore, doc, onSnapshot, updateDoc, deleteField } from "https://w
 import { firebaseConfig, DOC_COLLECTION, DOC_ID } from "./firebase-config.js";
 
 const DIAS_ORDEN = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+const MESES_NOMBRE = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 const HOUR_HEIGHT = 56; // px por hora en el calendario semanal
+
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+function mondayOf(d) {
+  const x = new Date(d);
+  x.setHours(0, 0, 0, 0);
+  const dia = (x.getDay() + 6) % 7; // lunes = 0
+  x.setDate(x.getDate() - dia);
+  return x;
+}
+
+function addDays(d, n) {
+  const x = new Date(d);
+  x.setDate(x.getDate() + n);
+  return x;
+}
+
+// Semana que se muestra en el Horario (lunes de esa semana). Empieza en la
+// semana actual.
+let WEEK_START = mondayOf(new Date());
 
 const fbApp = initializeApp(firebaseConfig);
 const db = getFirestore(fbApp);
@@ -156,30 +179,69 @@ function toMinutes(hhmm) {
   return h * 60 + m;
 }
 
+// ¿Esta clase toca en la semana que empieza en weekStart (lunes, Date)?
+function claseAplicaSemana(c, weekStart) {
+  const repite = c.repite || "semanal";
+  if (repite === "puntual") {
+    if (!c.fecha) return false;
+    return mondayOf(parseFecha(c.fecha)).getTime() === weekStart.getTime();
+  }
+  if (repite === "quincenal") {
+    if (!c.fechaRef) return true; // sin referencia todavía: se muestra siempre
+    const refMonday = mondayOf(parseFecha(c.fechaRef));
+    const diffSemanas = Math.round((weekStart - refMonday) / (7 * 86400000));
+    return diffSemanas % 2 === 0;
+  }
+  return true; // semanal
+}
+
+// Día de la semana en el que cae una clase ya filtrada para "esta semana".
+function diaDeClase(c) {
+  if ((c.repite || "semanal") === "puntual" && c.fecha) {
+    return DIAS_ORDEN[(parseFecha(c.fecha).getDay() + 6) % 7];
+  }
+  return c.dia;
+}
+
 function renderHorario() {
   const el = document.getElementById("view-horario");
   const addBtn = `<button class="add-btn" id="addClase">+ Añadir clase</button>`;
 
-  if (!DATA.horario || DATA.horario.length === 0) {
-    el.innerHTML = addBtn + `<div class="empty-state">No hay horario cargado todavía.</div>`;
-    document.getElementById("addClase").addEventListener("click", () => openModal("horario", null));
+  const weekEnd = addDays(WEEK_START, 6);
+  const esSemanaActual = WEEK_START.getTime() === mondayOf(new Date()).getTime();
+  const weekLabel = `${WEEK_START.getDate()} ${MESES_NOMBRE[WEEK_START.getMonth() + 1].slice(0, 3).toLowerCase()} – ${weekEnd.getDate()} ${MESES_NOMBRE[weekEnd.getMonth() + 1].slice(0, 3).toLowerCase()}`;
+  const nav = `
+    <div class="week-nav">
+      <button class="week-nav-btn" id="weekPrev">‹</button>
+      <div class="week-nav-label">${weekLabel}${esSemanaActual ? "" : ` <button class="week-today-btn" id="weekToday">Hoy</button>`}</div>
+      <button class="week-nav-btn" id="weekNext">›</button>
+    </div>
+  `;
+
+  const clasesSemana = (DATA.horario || []).filter(c => claseAplicaSemana(c, WEEK_START));
+
+  if (clasesSemana.length === 0) {
+    el.innerHTML = addBtn + nav + `<div class="empty-state">No hay clases esta semana.</div>`;
+    wireHorarioControls();
     return;
   }
 
-  const diasConClase = Array.from(new Set(DATA.horario.map(c => c.dia)));
+  const diasConClase = Array.from(new Set(clasesSemana.map(diaDeClase)));
   const diasBase = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
   const dias = Array.from(new Set([...diasBase, ...diasConClase]))
     .filter(d => DIAS_ORDEN.includes(d))
     .sort((a, b) => DIAS_ORDEN.indexOf(a) - DIAS_ORDEN.indexOf(b));
 
-  const starts = DATA.horario.map(c => Math.floor(toMinutes(c.inicio) / 60));
-  const ends = DATA.horario.map(c => Math.ceil(toMinutes(c.fin) / 60));
+  const starts = clasesSemana.map(c => Math.floor(toMinutes(c.inicio) / 60));
+  const ends = clasesSemana.map(c => Math.ceil(toMinutes(c.fin) / 60));
   const minHour = Math.min(8, ...starts);
   const maxHour = Math.max(15, ...ends);
   const totalHoras = maxHour - minHour;
 
-  const hoyStr = DIAS_ORDEN[(new Date().getDay() + 6) % 7];
-  const ahoraMin = new Date().getHours() * 60 + new Date().getMinutes();
+  const hoy = new Date();
+  const esSemanaDeHoy = mondayOf(hoy).getTime() === WEEK_START.getTime();
+  const hoyStr = esSemanaDeHoy ? DIAS_ORDEN[(hoy.getDay() + 6) % 7] : null;
+  const ahoraMin = hoy.getHours() * 60 + hoy.getMinutes();
 
   let horas = "";
   for (let h = minHour; h < maxHour; h++) {
@@ -193,14 +255,15 @@ function renderHorario() {
 
   let cols = "";
   dias.forEach(d => {
-    const clases = DATA.horario.filter(c => c.dia === d);
+    const clases = clasesSemana.filter(c => diaDeClase(c) === d);
     let bloques = clases.map(c => {
       const top = (toMinutes(c.inicio) / 60 - minHour) * HOUR_HEIGHT;
       const height = Math.max(28, (toMinutes(c.fin) - toMinutes(c.inicio)) / 60 * HOUR_HEIGHT - 2);
+      const etiqueta = c.repite === "puntual" ? " · puntual" : c.repite === "quincenal" ? " · quincenal" : "";
       return `
         <div class="class-block" data-id="${c.id}" style="top:${top}px;height:${height}px;background:${c.color || "#6366f1"}" title="${escapeAttr(c.asignatura)}">
           <div class="cb-title">${escapeHtml(c.asignatura)}</div>
-          <div class="cb-meta">${c.inicio}–${c.fin}${c.aula ? " · " + escapeHtml(c.aula) : ""}</div>
+          <div class="cb-meta">${c.inicio}–${c.fin}${c.aula ? " · " + escapeHtml(c.aula) : ""}${etiqueta}</div>
         </div>`;
     }).join("");
 
@@ -213,7 +276,7 @@ function renderHorario() {
     cols += `<div class="day-col ${d === hoyStr ? "today" : ""}" style="height:${totalHoras * HOUR_HEIGHT}px">${bloques}${nowLine}</div>`;
   });
 
-  el.innerHTML = addBtn + `
+  el.innerHTML = addBtn + nav + `
     <div class="week-wrap">
       <div class="week-header" style="grid-template-columns:44px repeat(${dias.length},minmax(92px,1fr))">${header}</div>
       <div class="week-body" style="grid-template-columns:44px repeat(${dias.length},minmax(92px,1fr))">
@@ -223,8 +286,16 @@ function renderHorario() {
     </div>
   `;
 
+  wireHorarioControls();
+}
+
+function wireHorarioControls() {
   document.getElementById("addClase").addEventListener("click", () => openModal("horario", null));
-  el.querySelectorAll(".class-block").forEach(blk => {
+  document.getElementById("weekPrev").addEventListener("click", () => { WEEK_START = addDays(WEEK_START, -7); renderHorario(); });
+  document.getElementById("weekNext").addEventListener("click", () => { WEEK_START = addDays(WEEK_START, 7); renderHorario(); });
+  const todayBtn = document.getElementById("weekToday");
+  if (todayBtn) todayBtn.addEventListener("click", () => { WEEK_START = mondayOf(new Date()); renderHorario(); });
+  document.querySelectorAll(".class-block").forEach(blk => {
     blk.addEventListener("click", () => {
       const item = DATA.horario.find(x => x.id === blk.dataset.id);
       openModal("horario", item);
@@ -234,12 +305,7 @@ function renderHorario() {
 
 // --- Calendario del cuatrimestre ---
 
-const MESES_NOMBRE = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 const DIAS_CORTOS = ["L", "M", "X", "J", "V", "S", "D"];
-
-function pad2(n) {
-  return String(n).padStart(2, "0");
-}
 
 function cursoInicioAno() {
   const now = new Date();
@@ -529,14 +595,6 @@ function renderNotas() {
 // --- Modal de crear / editar / eliminar ---
 
 const FORM_FIELDS = {
-  horario: [
-    { key: "dia", label: "Día", type: "select", options: DIAS_ORDEN.slice(0, 7) },
-    { key: "inicio", label: "Hora de inicio", type: "time" },
-    { key: "fin", label: "Hora de fin", type: "time" },
-    { key: "asignatura", label: "Asignatura", type: "text" },
-    { key: "aula", label: "Aula", type: "text", optional: true },
-    { key: "color", label: "Color", type: "color", default: "#6366f1" }
-  ],
   examenes: [
     { key: "asignatura", label: "Asignatura", type: "text" },
     { key: "fecha", label: "Fecha", type: "date" },
@@ -561,30 +619,85 @@ function newId(kind) {
   return ID_PREFIJO[kind] + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
+function horarioFieldsHtml(item) {
+  const repite = (item && item.repite) || "semanal";
+  const dia = (item && item.dia) || DIAS_ORDEN[0];
+  const fecha = (item && item.fecha) || "";
+  const fechaRef = (item && item.fechaRef) || "";
+  const inicio = (item && item.inicio) || "";
+  const fin = (item && item.fin) || "";
+  const asignatura = (item && item.asignatura) || "";
+  const aula = (item && item.aula) || "";
+  const color = (item && item.color) || "#6366f1";
+
+  return `
+    <label class="mf-label">¿Cada cuánto toca?
+      <select class="mf-input" id="hRepite">
+        <option value="semanal" ${repite === "semanal" ? "selected" : ""}>Todas las semanas</option>
+        <option value="quincenal" ${repite === "quincenal" ? "selected" : ""}>Una semana sí, una no</option>
+        <option value="puntual" ${repite === "puntual" ? "selected" : ""}>Solo un día concreto</option>
+      </select>
+    </label>
+    <div id="hGroupDia" class="mf-group">
+      <label class="mf-label">Día
+        <select class="mf-input" id="hDia">
+          ${DIAS_ORDEN.slice(0, 7).map(d => `<option value="${d}" ${d === dia ? "selected" : ""}>${d}</option>`).join("")}
+        </select>
+      </label>
+    </div>
+    <div id="hGroupFecha" class="mf-group">
+      <label class="mf-label">Fecha<input class="mf-input" type="date" id="hFecha" value="${fecha}"></label>
+    </div>
+    <div id="hGroupFechaRef" class="mf-group">
+      <label class="mf-label">Una fecha en la que SÍ toque esta clase (para saber qué semanas le tocan)
+        <input class="mf-input" type="date" id="hFechaRef" value="${fechaRef}">
+      </label>
+    </div>
+    <label class="mf-label">Hora de inicio<input class="mf-input" type="time" id="hInicio" value="${inicio}"></label>
+    <label class="mf-label">Hora de fin<input class="mf-input" type="time" id="hFin" value="${fin}"></label>
+    <label class="mf-label">Asignatura<input class="mf-input" type="text" id="hAsignatura" value="${escapeAttr(asignatura)}"></label>
+    <label class="mf-label">Aula<input class="mf-input" type="text" id="hAula" value="${escapeAttr(aula)}"></label>
+    <label class="mf-label">Color<input class="mf-input" type="color" id="hColor" value="${color}"></label>
+  `;
+}
+
+function updateHorarioGroups() {
+  const repite = document.getElementById("hRepite").value;
+  document.getElementById("hGroupDia").classList.toggle("hidden", repite === "puntual");
+  document.getElementById("hGroupFecha").classList.toggle("hidden", repite !== "puntual");
+  document.getElementById("hGroupFechaRef").classList.toggle("hidden", repite !== "quincenal");
+}
+
 function openModal(kind, item) {
   // item puede ser: null (nuevo, vacío), un elemento existente completo
   // (tiene .id, es una edición) o un "borrador" con algún campo precargado
   // pero sin id (nuevo, p. ej. al pinchar un día del calendario).
   const isEdit = !!(item && item.id);
   modalCtx = { kind, id: isEdit ? item.id : null };
-  const fields = FORM_FIELDS[kind];
 
   document.getElementById("modalTitle").textContent = (isEdit ? "Editar " : "Añadir ") + TIPO_NOMBRE[kind];
 
-  document.getElementById("modalFields").innerHTML = fields.map(f => {
-    const val = (item && item[f.key] != null) ? item[f.key] : (f.default ?? "");
-    if (f.type === "select") {
-      return `<label class="mf-label">${f.label}
-        <select class="mf-input" data-key="${f.key}">
-          ${f.options.map(o => `<option value="${o}" ${o === val ? "selected" : ""}>${o}</option>`).join("")}
-        </select>
-      </label>`;
-    }
-    if (f.type === "textarea") {
-      return `<label class="mf-label">${f.label}<textarea class="mf-input" data-key="${f.key}" rows="2">${escapeHtml(val)}</textarea></label>`;
-    }
-    return `<label class="mf-label">${f.label}<input class="mf-input" type="${f.type}" data-key="${f.key}" value="${escapeAttr(val)}"></label>`;
-  }).join("");
+  if (kind === "horario") {
+    document.getElementById("modalFields").innerHTML = horarioFieldsHtml(item);
+    document.getElementById("hRepite").addEventListener("change", updateHorarioGroups);
+    updateHorarioGroups();
+  } else {
+    const fields = FORM_FIELDS[kind];
+    document.getElementById("modalFields").innerHTML = fields.map(f => {
+      const val = (item && item[f.key] != null) ? item[f.key] : (f.default ?? "");
+      if (f.type === "select") {
+        return `<label class="mf-label">${f.label}
+          <select class="mf-input" data-key="${f.key}">
+            ${f.options.map(o => `<option value="${o}" ${o === val ? "selected" : ""}>${o}</option>`).join("")}
+          </select>
+        </label>`;
+      }
+      if (f.type === "textarea") {
+        return `<label class="mf-label">${f.label}<textarea class="mf-input" data-key="${f.key}" rows="2">${escapeHtml(val)}</textarea></label>`;
+      }
+      return `<label class="mf-label">${f.label}<input class="mf-input" type="${f.type}" data-key="${f.key}" value="${escapeAttr(val)}"></label>`;
+    }).join("");
+  }
 
   document.getElementById("modalDelete").style.display = isEdit ? "inline-block" : "none";
   document.getElementById("modalOverlay").classList.add("open");
@@ -595,8 +708,50 @@ function closeModal() {
   modalCtx = null;
 }
 
+function saveHorarioModal() {
+  const { id } = modalCtx;
+  const repite = document.getElementById("hRepite").value;
+  const asignatura = document.getElementById("hAsignatura").value.trim();
+  const inicio = document.getElementById("hInicio").value;
+  const fin = document.getElementById("hFin").value;
+  const aula = document.getElementById("hAula").value.trim();
+  const color = document.getElementById("hColor").value;
+
+  if (!asignatura || !inicio || !fin) {
+    alert("Rellena al menos asignatura, hora de inicio y hora de fin.");
+    return;
+  }
+
+  const useId = id || newId("horario");
+  const update = {
+    [`horario.${useId}.repite`]: repite,
+    [`horario.${useId}.asignatura`]: asignatura,
+    [`horario.${useId}.inicio`]: inicio,
+    [`horario.${useId}.fin`]: fin,
+    [`horario.${useId}.aula`]: aula,
+    [`horario.${useId}.color`]: color
+  };
+
+  if (repite === "puntual") {
+    const fecha = document.getElementById("hFecha").value;
+    if (!fecha) { alert("Elige la fecha de esta clase puntual."); return; }
+    update[`horario.${useId}.fecha`] = fecha;
+  } else {
+    const dia = document.getElementById("hDia").value;
+    update[`horario.${useId}.dia`] = dia;
+    if (repite === "quincenal") {
+      const fechaRef = document.getElementById("hFechaRef").value;
+      if (!fechaRef) { alert("Indica una fecha en la que sí toque esta clase, para saber qué semanas son."); return; }
+      update[`horario.${useId}.fechaRef`] = fechaRef;
+    }
+  }
+
+  updateDoc(docRef, update).then(closeModal).catch(err => { closeModal(); showConnError(err); });
+}
+
 function saveModal() {
   const { kind, id } = modalCtx;
+  if (kind === "horario") return saveHorarioModal();
   const fields = FORM_FIELDS[kind];
   const values = {};
   let faltan = [];

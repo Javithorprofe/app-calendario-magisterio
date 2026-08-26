@@ -322,6 +322,52 @@ section.view.active { display: block; }
   font-size: .9rem;
 }
 
+.mf-group.hidden {
+  display: none;
+}
+
+/* Navegación de semanas del horario */
+.week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.week-nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.week-nav-label {
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.week-today-btn {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(99, 102, 241, .12);
+  border: none;
+  border-radius: 999px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
 /* Calendario semanal */
 .week-wrap {
   overflow-x: auto;
