@@ -12,6 +12,13 @@ const docRef = doc(db, DOC_COLLECTION, DOC_ID);
 let DATA = { curso: "", horario: [], examenes: [], trabajos: [] };
 let CONNECTED = false;
 
+// Cuatrimestre seleccionado en la vista de calendario (1 o 2). Por defecto,
+// el que corresponda según la fecha de hoy.
+let CUATRI_SEL = (() => {
+  const mes = new Date().getMonth() + 1;
+  return (mes >= 2 && mes <= 6) ? 2 : 1;
+})();
+
 function mapToArray(map) {
   return Object.entries(map || {}).map(([id, v]) => ({ id, ...v }));
 }
@@ -104,6 +111,7 @@ function notaClass(nota) {
 function render() {
   renderNextCard();
   renderHorario();
+  renderCuatrimestre();
   renderExamenes();
   renderTrabajos();
   renderNotas();
@@ -211,6 +219,103 @@ function renderHorario() {
       </div>
     </div>
   `;
+}
+
+// --- Calendario del cuatrimestre ---
+
+const MESES_NOMBRE = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+const DIAS_CORTOS = ["L", "M", "X", "J", "V", "S", "D"];
+
+function pad2(n) {
+  return String(n).padStart(2, "0");
+}
+
+function cursoInicioAno() {
+  const now = new Date();
+  const mes = now.getMonth() + 1;
+  return mes >= 8 ? now.getFullYear() : now.getFullYear() - 1;
+}
+
+function mesesCuatri(n) {
+  const inicio = cursoInicioAno();
+  return n === 1
+    ? [{ m: 9, y: inicio }, { m: 10, y: inicio }, { m: 11, y: inicio }, { m: 12, y: inicio }, { m: 1, y: inicio + 1 }]
+    : [{ m: 2, y: inicio + 1 }, { m: 3, y: inicio + 1 }, { m: 4, y: inicio + 1 }, { m: 5, y: inicio + 1 }, { m: 6, y: inicio + 1 }];
+}
+
+function buildEventMap() {
+  const map = {};
+  DATA.examenes.forEach(e => {
+    (map[e.fecha] = map[e.fecha] || []).push({ tipo: "examen", titulo: e.asignatura });
+  });
+  DATA.trabajos.forEach(t => {
+    (map[t.fechaEntrega] = map[t.fechaEntrega] || []).push({ tipo: "trabajo", titulo: `${t.asignatura}: ${t.titulo}` });
+  });
+  return map;
+}
+
+function monthGridHtml(mes, anio, eventMap) {
+  const first = new Date(anio, mes - 1, 1);
+  const startOffset = (first.getDay() + 6) % 7; // lunes = 0
+  const diasEnMes = new Date(anio, mes, 0).getDate();
+  const hoy = new Date();
+  const hoyStr = `${hoy.getFullYear()}-${pad2(hoy.getMonth() + 1)}-${pad2(hoy.getDate())}`;
+
+  let celdas = "";
+  for (let i = 0; i < startOffset; i++) celdas += `<div class="mc-cell empty"></div>`;
+
+  for (let d = 1; d <= diasEnMes; d++) {
+    const dateStr = `${anio}-${pad2(mes)}-${pad2(d)}`;
+    const evs = eventMap[dateStr] || [];
+    const esHoy = dateStr === hoyStr;
+    const dots = evs.slice(0, 3).map(e => `<span class="mc-dot ${e.tipo}"></span>`).join("");
+    const tip = evs.map(e => (e.tipo === "examen" ? "Examen: " : "Entrega: ") + e.titulo).join(" · ");
+    celdas += `
+      <div class="mc-cell ${esHoy ? "today" : ""} ${evs.length ? "has-event" : ""}" ${tip ? `title="${escapeAttr(tip)}"` : ""}>
+        <span class="mc-num">${d}</span>
+        <span class="mc-dots">${dots}</span>
+      </div>`;
+  }
+
+  const trailing = (7 - ((startOffset + diasEnMes) % 7)) % 7;
+  for (let i = 0; i < trailing; i++) celdas += `<div class="mc-cell empty"></div>`;
+
+  return `
+    <div class="month-card">
+      <div class="month-title">${MESES_NOMBRE[mes]} ${anio}</div>
+      <div class="month-grid">
+        ${DIAS_CORTOS.map(d => `<div class="mc-dow">${d}</div>`).join("")}
+        ${celdas}
+      </div>
+    </div>
+  `;
+}
+
+function renderCuatrimestre() {
+  const el = document.getElementById("view-cuatrimestre");
+  const eventMap = buildEventMap();
+  const meses = mesesCuatri(CUATRI_SEL);
+
+  const toggle = `
+    <div class="cuatri-toggle">
+      <button class="${CUATRI_SEL === 1 ? "active" : ""}" data-cuatri="1">1er cuatrimestre</button>
+      <button class="${CUATRI_SEL === 2 ? "active" : ""}" data-cuatri="2">2º cuatrimestre</button>
+    </div>
+    <div class="cuatri-legend">
+      <span><span class="mc-dot examen"></span> Examen</span>
+      <span><span class="mc-dot trabajo"></span> Entrega de trabajo</span>
+    </div>
+  `;
+
+  const grids = meses.map(({ m, y }) => monthGridHtml(m, y, eventMap)).join("");
+  el.innerHTML = toggle + `<div class="months-wrap">${grids}</div>`;
+
+  el.querySelectorAll(".cuatri-toggle button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      CUATRI_SEL = Number(btn.dataset.cuatri);
+      renderCuatrimestre();
+    });
+  });
 }
 
 function renderExamenes() {
@@ -375,6 +480,10 @@ function escapeHtml(str) {
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
+}
+
+function escapeAttr(str) {
+  return escapeHtml(str).replace(/"/g, "&quot;");
 }
 
 function setupTabs() {
