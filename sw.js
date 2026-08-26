@@ -1,4 +1,4 @@
-const CACHE = "magisterio-v1";
+const CACHE = "magisterio-v2";
 const ASSETS = [
   "./",
   "index.html",
@@ -20,16 +20,18 @@ self.addEventListener("activate", e => {
   self.clients.claim();
 });
 
+// Red primero para todo: así en cuanto hay una versión nueva (yo edito y
+// publico), la ves de inmediato con internet. Si no hay conexión, cae al
+// caché para que la app siga funcionando offline.
 self.addEventListener("fetch", e => {
-  const url = new URL(e.request.url);
-  // data.json: siempre intenta red primero para tener los datos al día
-  if (url.pathname.endsWith("data.json")) {
-    e.respondWith(
-      fetch(e.request).catch(() => caches.match(e.request))
-    );
-    return;
-  }
+  if (e.request.method !== "GET") return;
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request)
+      .then(res => {
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, copy));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });

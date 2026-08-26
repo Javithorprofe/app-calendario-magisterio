@@ -47,6 +47,14 @@ html, body {
   padding-bottom: 84px;
 }
 
+@media (min-width: 768px) {
+  #app { max-width: 900px; padding-bottom: 32px; }
+}
+
+@media (min-width: 1200px) {
+  #app { max-width: 1140px; }
+}
+
 /* Header */
 header.top {
   padding: 20px 20px 12px;
@@ -485,3 +493,41 @@ nav.bottom button {
 nav.bottom button .icon { font-size: 1.25rem; }
 
 nav.bottom button.active { color: var(--accent); }
+
+/* Tablet / escritorio: la barra inferior desaparece, las pestañas de arriba
+   pasan a ser la navegación principal y hay más espacio para el contenido. */
+@media (min-width: 768px) {
+  nav.bottom { display: none; }
+
+  #app { padding-bottom: 40px; }
+
+  header.top { padding: 28px 32px 8px; }
+  header.top h1 { font-size: 1.6rem; }
+
+  .next-card { margin: 18px 32px 0; padding: 20px 24px; }
+
+  nav.tabs { padding: 20px 32px 8px; gap: 8px; }
+  nav.tabs button { padding: 10px 20px; font-size: .92rem; }
+
+  main { padding: 8px 32px 32px; }
+
+  /* Exámenes / trabajos / notas en cuadrícula para aprovechar el ancho */
+  #view-examenes.active, #view-trabajos.active, .notas-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 10px;
+    align-content: start;
+  }
+  #view-examenes .list-card, #view-trabajos .list-card, .notas-list .nota-card {
+    margin-bottom: 0;
+  }
+
+  .notas-summary { max-width: 480px; }
+}
+
+@media (min-width: 1200px) {
+  header.top { padding: 32px 40px 8px; }
+  .next-card { margin: 18px 40px 0; }
+  nav.tabs { padding: 20px 40px 8px; }
+  main { padding: 8px 40px 40px; }
+}
