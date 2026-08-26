@@ -28,6 +28,16 @@ function addDays(d, n) {
 // semana actual.
 let WEEK_START = mondayOf(new Date());
 
+// Lista de asignaturas del curso, cada una con su color fijo. Se usa como
+// desplegable al crear/editar horario, exámenes y trabajos, para que el
+// nombre sea siempre exactamente igual y el color consistente en toda la
+// app. PENDIENTE: sustituir por la lista real en cuanto Javier la pase.
+const ASIGNATURAS = [
+  { nombre: "Ejemplo: Psicología del Desarrollo", color: "#6366f1" },
+  { nombre: "Ejemplo: Didáctica General", color: "#ec4899" },
+  { nombre: "Ejemplo: TIC en Educación", color: "#10b981" }
+];
+
 const fbApp = initializeApp(firebaseConfig);
 const db = getFirestore(fbApp);
 const docRef = doc(db, DOC_COLLECTION, DOC_ID);
@@ -203,6 +213,20 @@ function diaDeClase(c) {
   return c.dia;
 }
 
+// Leyenda estable de color → asignatura, con todas las clases del horario
+// (no solo las de la semana visible), para aprenderse la equivalencia.
+function subjectLegendHtml() {
+  const vistas = new Map();
+  (DATA.horario || []).forEach(c => {
+    if (c.asignatura && !vistas.has(c.asignatura)) vistas.set(c.asignatura, c.color || "#6366f1");
+  });
+  if (vistas.size === 0) return "";
+  const chips = Array.from(vistas.entries()).map(([nombre, color]) =>
+    `<div class="subject-chip"><span class="dot" style="background:${color}"></span>${escapeHtml(nombre)}</div>`
+  ).join("");
+  return `<div class="subject-legend">${chips}</div>`;
+}
+
 function renderHorario() {
   const el = document.getElementById("view-horario");
   const addBtn = `<button class="add-btn" id="addClase">+ Añadir clase</button>`;
@@ -212,16 +236,19 @@ function renderHorario() {
   const weekLabel = `${WEEK_START.getDate()} ${MESES_NOMBRE[WEEK_START.getMonth() + 1].slice(0, 3).toLowerCase()} – ${weekEnd.getDate()} ${MESES_NOMBRE[weekEnd.getMonth() + 1].slice(0, 3).toLowerCase()}`;
   const nav = `
     <div class="week-nav">
-      <button class="week-nav-btn" id="weekPrev">‹</button>
-      <div class="week-nav-label">${weekLabel}${esSemanaActual ? "" : ` <button class="week-today-btn" id="weekToday">Hoy</button>`}</div>
-      <button class="week-nav-btn" id="weekNext">›</button>
+      <button class="week-nav-btn" id="weekPrev" aria-label="Semana anterior">‹</button>
+      <div class="week-nav-center">
+        <div class="week-nav-label">${weekLabel}</div>
+        <button class="week-today-btn ${esSemanaActual ? "current" : ""}" id="weekToday">Semana actual</button>
+      </div>
+      <button class="week-nav-btn" id="weekNext" aria-label="Semana siguiente">›</button>
     </div>
   `;
 
   const clasesSemana = (DATA.horario || []).filter(c => claseAplicaSemana(c, WEEK_START));
 
   if (clasesSemana.length === 0) {
-    el.innerHTML = addBtn + nav + `<div class="empty-state">No hay clases esta semana.</div>`;
+    el.innerHTML = addBtn + nav + `<div class="empty-state">No hay clases esta semana.</div>` + subjectLegendHtml();
     wireHorarioControls();
     return;
   }
@@ -260,10 +287,10 @@ function renderHorario() {
       const top = (toMinutes(c.inicio) / 60 - minHour) * HOUR_HEIGHT;
       const height = Math.max(28, (toMinutes(c.fin) - toMinutes(c.inicio)) / 60 * HOUR_HEIGHT - 2);
       const etiqueta = c.repite === "puntual" ? " · puntual" : c.repite === "quincenal" ? " · quincenal" : "";
+      const tip = `${c.asignatura}${c.aula ? " · " + c.aula : ""}${etiqueta}`;
       return `
-        <div class="class-block" data-id="${c.id}" style="top:${top}px;height:${height}px;background:${c.color || "#6366f1"}" title="${escapeAttr(c.asignatura)}">
-          <div class="cb-title">${escapeHtml(c.asignatura)}</div>
-          <div class="cb-meta">${c.inicio}–${c.fin}${c.aula ? " · " + escapeHtml(c.aula) : ""}${etiqueta}</div>
+        <div class="class-block" data-id="${c.id}" style="top:${top}px;height:${height}px;background:${c.color || "#6366f1"}" title="${escapeAttr(tip)}">
+          <div class="cb-time">${c.inicio}–${c.fin}</div>
         </div>`;
     }).join("");
 
@@ -278,23 +305,44 @@ function renderHorario() {
 
   el.innerHTML = addBtn + nav + `
     <div class="week-wrap">
-      <div class="week-header" style="grid-template-columns:44px repeat(${dias.length},minmax(92px,1fr))">${header}</div>
-      <div class="week-body" style="grid-template-columns:44px repeat(${dias.length},minmax(92px,1fr))">
+      <div class="week-header" style="grid-template-columns:34px repeat(${dias.length},minmax(56px,1fr))">${header}</div>
+      <div class="week-body" style="grid-template-columns:34px repeat(${dias.length},minmax(56px,1fr))">
         <div class="time-col" style="height:${totalHoras * HOUR_HEIGHT}px">${horas}</div>
         ${cols}
       </div>
     </div>
-  `;
+  ` + subjectLegendHtml();
 
   wireHorarioControls();
 }
 
+function irSemanaAnterior() { WEEK_START = addDays(WEEK_START, -7); renderHorario(); }
+function irSemanaSiguiente() { WEEK_START = addDays(WEEK_START, 7); renderHorario(); }
+function irSemanaActual() { WEEK_START = mondayOf(new Date()); renderHorario(); }
+
+function wireSwipe(el, onLeft, onRight) {
+  let startX = null, startY = null;
+  el.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  el.addEventListener("touchend", (e) => {
+    if (startX == null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) onLeft(); else onRight();
+    }
+    startX = null; startY = null;
+  }, { passive: true });
+}
+
 function wireHorarioControls() {
   document.getElementById("addClase").addEventListener("click", () => openModal("horario", null));
-  document.getElementById("weekPrev").addEventListener("click", () => { WEEK_START = addDays(WEEK_START, -7); renderHorario(); });
-  document.getElementById("weekNext").addEventListener("click", () => { WEEK_START = addDays(WEEK_START, 7); renderHorario(); });
-  const todayBtn = document.getElementById("weekToday");
-  if (todayBtn) todayBtn.addEventListener("click", () => { WEEK_START = mondayOf(new Date()); renderHorario(); });
+  document.getElementById("weekPrev").addEventListener("click", irSemanaAnterior);
+  document.getElementById("weekNext").addEventListener("click", irSemanaSiguiente);
+  document.getElementById("weekToday").addEventListener("click", irSemanaActual);
+  wireSwipe(document.querySelector(".week-nav"), irSemanaSiguiente, irSemanaAnterior);
   document.querySelectorAll(".class-block").forEach(blk => {
     blk.addEventListener("click", () => {
       const item = DATA.horario.find(x => x.id === blk.dataset.id);
@@ -437,7 +485,7 @@ function renderExamenes() {
     `;
   }).join("");
 
-  el.innerHTML = addBtn + list;
+  el.innerHTML = addBtn + `<div class="cards-grid">${list}</div>`;
   document.getElementById("addExamen").addEventListener("click", () => openModal("examenes", null));
   el.querySelectorAll(".list-card").forEach(card => {
     card.addEventListener("click", () => {
@@ -487,7 +535,7 @@ function renderTrabajos() {
     `;
   }).join("");
 
-  el.innerHTML = addBtn + list;
+  el.innerHTML = addBtn + `<div class="cards-grid">${list}</div>`;
   document.getElementById("addTrabajo").addEventListener("click", () => openModal("trabajos", null));
 
   el.querySelectorAll(".fase-chip").forEach(btn => {
@@ -596,14 +644,14 @@ function renderNotas() {
 
 const FORM_FIELDS = {
   examenes: [
-    { key: "asignatura", label: "Asignatura", type: "text" },
+    { key: "asignatura", label: "Asignatura", type: "select", options: ASIGNATURAS.map(a => a.nombre) },
     { key: "fecha", label: "Fecha", type: "date" },
-    { key: "hora", label: "Hora", type: "time", optional: true },
+    { key: "hora", label: "Hora", type: "timeselect", optional: true },
     { key: "aula", label: "Aula", type: "text", optional: true },
     { key: "notas", label: "Notas", type: "textarea", optional: true }
   ],
   trabajos: [
-    { key: "asignatura", label: "Asignatura", type: "text" },
+    { key: "asignatura", label: "Asignatura", type: "select", options: ASIGNATURAS.map(a => a.nombre) },
     { key: "titulo", label: "Título", type: "text" },
     { key: "fechaEntrega", label: "Fecha de entrega", type: "date" },
     { key: "notas", label: "Notas", type: "textarea", optional: true }
@@ -617,6 +665,32 @@ let modalCtx = null; // { kind, id: string|null }
 
 function newId(kind) {
   return ID_PREFIJO[kind] + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+const MINUTOS_SELECT = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
+
+function timeSelectHtml(idPrefix, value) {
+  const [h, m] = (value || "").split(":");
+  const horas = Array.from({ length: 24 }, (_, i) => pad2(i));
+  return `
+    <div class="time-select">
+      <select class="mf-input" id="${idPrefix}Hora">
+        <option value="">--</option>
+        ${horas.map(hh => `<option value="${hh}" ${hh === h ? "selected" : ""}>${hh}</option>`).join("")}
+      </select>
+      <span class="time-sep">:</span>
+      <select class="mf-input" id="${idPrefix}Min">
+        <option value="">--</option>
+        ${MINUTOS_SELECT.map(mm => `<option value="${mm}" ${mm === m ? "selected" : ""}>${mm}</option>`).join("")}
+      </select>
+    </div>
+  `;
+}
+
+function readTimeSelect(idPrefix) {
+  const h = document.getElementById(idPrefix + "Hora").value;
+  const m = document.getElementById(idPrefix + "Min").value;
+  return (h && m) ? `${h}:${m}` : "";
 }
 
 function horarioFieldsHtml(item) {
@@ -653,12 +727,22 @@ function horarioFieldsHtml(item) {
         <input class="mf-input" type="date" id="hFechaRef" value="${fechaRef}">
       </label>
     </div>
-    <label class="mf-label">Hora de inicio<input class="mf-input" type="time" id="hInicio" value="${inicio}"></label>
-    <label class="mf-label">Hora de fin<input class="mf-input" type="time" id="hFin" value="${fin}"></label>
-    <label class="mf-label">Asignatura<input class="mf-input" type="text" id="hAsignatura" value="${escapeAttr(asignatura)}"></label>
+    <label class="mf-label">Hora de inicio${timeSelectHtml("hInicio", inicio)}</label>
+    <label class="mf-label">Hora de fin${timeSelectHtml("hFin", fin)}</label>
+    <label class="mf-label">Asignatura
+      <select class="mf-input" id="hAsignatura">
+        ${ASIGNATURAS.map(a => `<option value="${escapeAttr(a.nombre)}" ${a.nombre === asignatura ? "selected" : ""}>${escapeHtml(a.nombre)}</option>`).join("")}
+      </select>
+    </label>
     <label class="mf-label">Aula<input class="mf-input" type="text" id="hAula" value="${escapeAttr(aula)}"></label>
     <label class="mf-label">Color<input class="mf-input" type="color" id="hColor" value="${color}"></label>
   `;
+}
+
+function syncHorarioColor() {
+  const nombre = document.getElementById("hAsignatura").value;
+  const asig = ASIGNATURAS.find(a => a.nombre === nombre);
+  if (asig) document.getElementById("hColor").value = asig.color;
 }
 
 function updateHorarioGroups() {
@@ -680,6 +764,7 @@ function openModal(kind, item) {
   if (kind === "horario") {
     document.getElementById("modalFields").innerHTML = horarioFieldsHtml(item);
     document.getElementById("hRepite").addEventListener("change", updateHorarioGroups);
+    document.getElementById("hAsignatura").addEventListener("change", syncHorarioColor);
     updateHorarioGroups();
   } else {
     const fields = FORM_FIELDS[kind];
@@ -694,6 +779,9 @@ function openModal(kind, item) {
       }
       if (f.type === "textarea") {
         return `<label class="mf-label">${f.label}<textarea class="mf-input" data-key="${f.key}" rows="2">${escapeHtml(val)}</textarea></label>`;
+      }
+      if (f.type === "timeselect") {
+        return `<label class="mf-label">${f.label}${timeSelectHtml("f_" + f.key, val)}</label>`;
       }
       return `<label class="mf-label">${f.label}<input class="mf-input" type="${f.type}" data-key="${f.key}" value="${escapeAttr(val)}"></label>`;
     }).join("");
@@ -712,8 +800,8 @@ function saveHorarioModal() {
   const { id } = modalCtx;
   const repite = document.getElementById("hRepite").value;
   const asignatura = document.getElementById("hAsignatura").value.trim();
-  const inicio = document.getElementById("hInicio").value;
-  const fin = document.getElementById("hFin").value;
+  const inicio = readTimeSelect("hInicio");
+  const fin = readTimeSelect("hFin");
   const aula = document.getElementById("hAula").value.trim();
   const color = document.getElementById("hColor").value;
 
@@ -756,12 +844,12 @@ function saveModal() {
   const values = {};
   let faltan = [];
 
-  document.querySelectorAll("#modalFields .mf-input").forEach(inp => {
-    const key = inp.dataset.key;
-    const def = fields.find(f => f.key === key);
-    const val = inp.value.trim();
-    if (!def.optional && !val) faltan.push(def.label);
-    values[key] = val;
+  fields.forEach(f => {
+    const val = f.type === "timeselect"
+      ? readTimeSelect("f_" + f.key)
+      : document.querySelector(`#modalFields [data-key="${f.key}"]`).value.trim();
+    if (!f.optional && !val) faltan.push(f.label);
+    values[f.key] = val;
   });
 
   if (faltan.length) {
