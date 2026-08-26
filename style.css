@@ -430,7 +430,9 @@ section.view.active { display: block; }
 }
 
 .week-header .day-head.today {
-  color: var(--accent);
+  color: #fff;
+  background: var(--accent);
+  border-radius: 6px 6px 0 0;
 }
 
 .time-col {
@@ -460,7 +462,8 @@ section.view.active { display: block; }
 }
 
 .day-col.today {
-  background-color: rgba(99, 102, 241, .05);
+  background-color: rgba(99, 102, 241, .13);
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, .35);
 }
 
 .class-block {
@@ -819,6 +822,11 @@ input[type="color"].mf-input {
 
 .mc-cell.has-event {
   background: var(--surface-2);
+}
+
+.mc-cell.today {
+  background: rgba(99, 102, 241, .1);
+  box-shadow: inset 0 0 0 2px var(--accent);
 }
 
 .mc-cell.today .mc-num {
