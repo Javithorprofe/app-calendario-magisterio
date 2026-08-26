@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { getFirestore, doc, onSnapshot, updateDoc, deleteField } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import { firebaseConfig, DOC_COLLECTION, DOC_ID } from "./firebase-config.js";
 
 const DIAS_ORDEN = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
@@ -158,8 +158,11 @@ function toMinutes(hhmm) {
 
 function renderHorario() {
   const el = document.getElementById("view-horario");
+  const addBtn = `<button class="add-btn" id="addClase">+ Añadir clase</button>`;
+
   if (!DATA.horario || DATA.horario.length === 0) {
-    el.innerHTML = `<div class="empty-state">No hay horario cargado todavía.</div>`;
+    el.innerHTML = addBtn + `<div class="empty-state">No hay horario cargado todavía.</div>`;
+    document.getElementById("addClase").addEventListener("click", () => openModal("horario", null));
     return;
   }
 
@@ -195,7 +198,7 @@ function renderHorario() {
       const top = (toMinutes(c.inicio) / 60 - minHour) * HOUR_HEIGHT;
       const height = Math.max(28, (toMinutes(c.fin) - toMinutes(c.inicio)) / 60 * HOUR_HEIGHT - 2);
       return `
-        <div class="class-block" style="top:${top}px;height:${height}px;background:${c.color || "#6366f1"}" title="${escapeHtml(c.asignatura)}">
+        <div class="class-block" data-id="${c.id}" style="top:${top}px;height:${height}px;background:${c.color || "#6366f1"}" title="${escapeAttr(c.asignatura)}">
           <div class="cb-title">${escapeHtml(c.asignatura)}</div>
           <div class="cb-meta">${c.inicio}–${c.fin}${c.aula ? " · " + escapeHtml(c.aula) : ""}</div>
         </div>`;
@@ -210,7 +213,7 @@ function renderHorario() {
     cols += `<div class="day-col ${d === hoyStr ? "today" : ""}" style="height:${totalHoras * HOUR_HEIGHT}px">${bloques}${nowLine}</div>`;
   });
 
-  el.innerHTML = `
+  el.innerHTML = addBtn + `
     <div class="week-wrap">
       <div class="week-header" style="grid-template-columns:44px repeat(${dias.length},minmax(92px,1fr))">${header}</div>
       <div class="week-body" style="grid-template-columns:44px repeat(${dias.length},minmax(92px,1fr))">
@@ -219,6 +222,14 @@ function renderHorario() {
       </div>
     </div>
   `;
+
+  document.getElementById("addClase").addEventListener("click", () => openModal("horario", null));
+  el.querySelectorAll(".class-block").forEach(blk => {
+    blk.addEventListener("click", () => {
+      const item = DATA.horario.find(x => x.id === blk.dataset.id);
+      openModal("horario", item);
+    });
+  });
 }
 
 // --- Calendario del cuatrimestre ---
@@ -271,7 +282,7 @@ function monthGridHtml(mes, anio, eventMap) {
     const dots = evs.slice(0, 3).map(e => `<span class="mc-dot ${e.tipo}"></span>`).join("");
     const tip = evs.map(e => (e.tipo === "examen" ? "Examen: " : "Entrega: ") + e.titulo).join(" · ");
     celdas += `
-      <div class="mc-cell ${esHoy ? "today" : ""} ${evs.length ? "has-event" : ""}" ${tip ? `title="${escapeAttr(tip)}"` : ""}>
+      <div class="mc-cell ${esHoy ? "today" : ""} ${evs.length ? "has-event" : ""}" data-date="${dateStr}" ${tip ? `title="${escapeAttr(tip)}"` : ""}>
         <span class="mc-num">${d}</span>
         <span class="mc-dots">${dots}</span>
       </div>`;
@@ -316,21 +327,39 @@ function renderCuatrimestre() {
       renderCuatrimestre();
     });
   });
+
+  el.querySelectorAll(".mc-cell:not(.empty)").forEach(cell => {
+    cell.addEventListener("click", () => openDayChoice(cell.dataset.date));
+  });
+}
+
+function openDayChoice(dateStr) {
+  const d = parseFecha(dateStr);
+  document.getElementById("dayChoiceTitle").textContent = "Añadir el " + d.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+  document.getElementById("dayChoiceOverlay").dataset.date = dateStr;
+  document.getElementById("dayChoiceOverlay").classList.add("open");
+}
+
+function closeDayChoice() {
+  document.getElementById("dayChoiceOverlay").classList.remove("open");
 }
 
 function renderExamenes() {
   const el = document.getElementById("view-examenes");
+  const addBtn = `<button class="add-btn" id="addExamen">+ Añadir examen</button>`;
+
   if (!DATA.examenes || DATA.examenes.length === 0) {
-    el.innerHTML = `<div class="empty-state">No hay exámenes registrados.</div>`;
+    el.innerHTML = addBtn + `<div class="empty-state">No hay exámenes registrados.</div>`;
+    document.getElementById("addExamen").addEventListener("click", () => openModal("examenes", null));
     return;
   }
   const ordenados = DATA.examenes.slice().sort((a, b) => a.fecha.localeCompare(b.fecha));
-  el.innerHTML = ordenados.map(e => {
+  const list = ordenados.map(e => {
     const dias = diasRestantes(e.fecha);
     const badge = badgeFor(dias);
     const nota = getNota(e);
     return `
-      <div class="list-card">
+      <div class="list-card" data-id="${e.id}">
         <div class="info">
           <div class="titulo">${escapeHtml(e.asignatura)}</div>
           <div class="meta">${fmtFecha(e.fecha)}${e.hora ? " · " + e.hora : ""}${e.aula ? " · " + escapeHtml(e.aula) : ""}</div>
@@ -341,16 +370,28 @@ function renderExamenes() {
       </div>
     `;
   }).join("");
+
+  el.innerHTML = addBtn + list;
+  document.getElementById("addExamen").addEventListener("click", () => openModal("examenes", null));
+  el.querySelectorAll(".list-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const item = DATA.examenes.find(x => x.id === card.dataset.id);
+      openModal("examenes", item);
+    });
+  });
 }
 
 function renderTrabajos() {
   const el = document.getElementById("view-trabajos");
+  const addBtn = `<button class="add-btn" id="addTrabajo">+ Añadir trabajo</button>`;
+
   if (!DATA.trabajos || DATA.trabajos.length === 0) {
-    el.innerHTML = `<div class="empty-state">No hay trabajos registrados.</div>`;
+    el.innerHTML = addBtn + `<div class="empty-state">No hay trabajos registrados.</div>`;
+    document.getElementById("addTrabajo").addEventListener("click", () => openModal("trabajos", null));
     return;
   }
   const ordenados = DATA.trabajos.slice().sort((a, b) => a.fechaEntrega.localeCompare(b.fechaEntrega));
-  el.innerHTML = ordenados.map((t) => {
+  const list = ordenados.map((t) => {
     const dias = diasRestantes(t.fechaEntrega);
     const badge = badgeFor(dias);
     const entendido = getEntendido(t);
@@ -363,6 +404,7 @@ function renderTrabajos() {
           <div class="tc-badges">
             ${nota != null ? `<span class="grade-pill ${notaClass(nota)}">${nota}</span>` : ""}
             <span class="badge ${badge.cls}">${badge.txt}</span>
+            <button class="tc-edit" data-id="${t.id}" title="Editar">✏️</button>
           </div>
         </div>
         <div class="meta">${escapeHtml(t.asignatura)} · Entrega: ${fmtFecha(t.fechaEntrega)}</div>
@@ -379,12 +421,22 @@ function renderTrabajos() {
     `;
   }).join("");
 
+  el.innerHTML = addBtn + list;
+  document.getElementById("addTrabajo").addEventListener("click", () => openModal("trabajos", null));
+
   el.querySelectorAll(".fase-chip").forEach(btn => {
     btn.addEventListener("click", () => {
       const item = DATA.trabajos.find(x => x.id === btn.dataset.id);
       const fase = btn.dataset.fase;
       const current = fase === "entendido" ? getEntendido(item) : getPresentado(item);
       setFase(item, fase, !current);
+    });
+  });
+
+  el.querySelectorAll(".tc-edit").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = DATA.trabajos.find(x => x.id === btn.dataset.id);
+      openModal("trabajos", item);
     });
   });
 }
@@ -474,6 +526,134 @@ function renderNotas() {
   });
 }
 
+// --- Modal de crear / editar / eliminar ---
+
+const FORM_FIELDS = {
+  horario: [
+    { key: "dia", label: "Día", type: "select", options: DIAS_ORDEN.slice(0, 7) },
+    { key: "inicio", label: "Hora de inicio", type: "time" },
+    { key: "fin", label: "Hora de fin", type: "time" },
+    { key: "asignatura", label: "Asignatura", type: "text" },
+    { key: "aula", label: "Aula", type: "text", optional: true },
+    { key: "color", label: "Color", type: "color", default: "#6366f1" }
+  ],
+  examenes: [
+    { key: "asignatura", label: "Asignatura", type: "text" },
+    { key: "fecha", label: "Fecha", type: "date" },
+    { key: "hora", label: "Hora", type: "time", optional: true },
+    { key: "aula", label: "Aula", type: "text", optional: true },
+    { key: "notas", label: "Notas", type: "textarea", optional: true }
+  ],
+  trabajos: [
+    { key: "asignatura", label: "Asignatura", type: "text" },
+    { key: "titulo", label: "Título", type: "text" },
+    { key: "fechaEntrega", label: "Fecha de entrega", type: "date" },
+    { key: "notas", label: "Notas", type: "textarea", optional: true }
+  ]
+};
+
+const TIPO_NOMBRE = { horario: "clase", examenes: "examen", trabajos: "trabajo" };
+const ID_PREFIJO = { horario: "cl", examenes: "ex", trabajos: "tr" };
+
+let modalCtx = null; // { kind, id: string|null }
+
+function newId(kind) {
+  return ID_PREFIJO[kind] + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+function openModal(kind, item) {
+  // item puede ser: null (nuevo, vacío), un elemento existente completo
+  // (tiene .id, es una edición) o un "borrador" con algún campo precargado
+  // pero sin id (nuevo, p. ej. al pinchar un día del calendario).
+  const isEdit = !!(item && item.id);
+  modalCtx = { kind, id: isEdit ? item.id : null };
+  const fields = FORM_FIELDS[kind];
+
+  document.getElementById("modalTitle").textContent = (isEdit ? "Editar " : "Añadir ") + TIPO_NOMBRE[kind];
+
+  document.getElementById("modalFields").innerHTML = fields.map(f => {
+    const val = (item && item[f.key] != null) ? item[f.key] : (f.default ?? "");
+    if (f.type === "select") {
+      return `<label class="mf-label">${f.label}
+        <select class="mf-input" data-key="${f.key}">
+          ${f.options.map(o => `<option value="${o}" ${o === val ? "selected" : ""}>${o}</option>`).join("")}
+        </select>
+      </label>`;
+    }
+    if (f.type === "textarea") {
+      return `<label class="mf-label">${f.label}<textarea class="mf-input" data-key="${f.key}" rows="2">${escapeHtml(val)}</textarea></label>`;
+    }
+    return `<label class="mf-label">${f.label}<input class="mf-input" type="${f.type}" data-key="${f.key}" value="${escapeAttr(val)}"></label>`;
+  }).join("");
+
+  document.getElementById("modalDelete").style.display = isEdit ? "inline-block" : "none";
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function closeModal() {
+  document.getElementById("modalOverlay").classList.remove("open");
+  modalCtx = null;
+}
+
+function saveModal() {
+  const { kind, id } = modalCtx;
+  const fields = FORM_FIELDS[kind];
+  const values = {};
+  let faltan = [];
+
+  document.querySelectorAll("#modalFields .mf-input").forEach(inp => {
+    const key = inp.dataset.key;
+    const def = fields.find(f => f.key === key);
+    const val = inp.value.trim();
+    if (!def.optional && !val) faltan.push(def.label);
+    values[key] = val;
+  });
+
+  if (faltan.length) {
+    alert("Faltan campos obligatorios: " + faltan.join(", "));
+    return;
+  }
+
+  const useId = id || newId(kind);
+  const update = {};
+  for (const [k, v] of Object.entries(values)) {
+    update[`${kind}.${useId}.${k}`] = v;
+  }
+
+  updateDoc(docRef, update).then(closeModal).catch(err => { closeModal(); showConnError(err); });
+}
+
+function deleteModal() {
+  const { kind, id } = modalCtx;
+  if (!id) return;
+  if (!confirm("¿Seguro que quieres eliminarlo? No se puede deshacer.")) return;
+  updateDoc(docRef, { [`${kind}.${id}`]: deleteField() }).then(closeModal).catch(err => { closeModal(); showConnError(err); });
+}
+
+function setupModal() {
+  document.getElementById("modalCancel").addEventListener("click", closeModal);
+  document.getElementById("modalSave").addEventListener("click", saveModal);
+  document.getElementById("modalDelete").addEventListener("click", deleteModal);
+  document.getElementById("modalOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "modalOverlay") closeModal();
+  });
+
+  document.getElementById("dayChoiceCancel").addEventListener("click", closeDayChoice);
+  document.getElementById("dayChoiceOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "dayChoiceOverlay") closeDayChoice();
+  });
+  document.getElementById("dayChoiceExamen").addEventListener("click", () => {
+    const fecha = document.getElementById("dayChoiceOverlay").dataset.date;
+    closeDayChoice();
+    openModal("examenes", { fecha });
+  });
+  document.getElementById("dayChoiceTrabajo").addEventListener("click", () => {
+    const fecha = document.getElementById("dayChoiceOverlay").dataset.date;
+    closeDayChoice();
+    openModal("trabajos", { fechaEntrega: fecha });
+  });
+}
+
 function escapeHtml(str) {
   if (str == null) return "";
   return String(str)
@@ -502,6 +682,7 @@ function setupTabs() {
 }
 
 setupTabs();
+setupModal();
 render();
 
 if ("serviceWorker" in navigator) {

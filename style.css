@@ -439,6 +439,175 @@ section.view.active { display: block; }
   background: var(--danger);
 }
 
+/* Botón "+ Añadir" */
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px dashed var(--accent);
+  background: rgba(99, 102, 241, .08);
+  color: var(--accent);
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.class-block, .list-card {
+  cursor: pointer;
+}
+
+.tc-edit {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: .95rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  flex-shrink: 0;
+}
+
+/* Modal de crear/editar */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  width: 100%;
+  max-width: 480px;
+  max-height: 88dvh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+}
+
+.modal h3 {
+  margin: 0 0 14px;
+  font-size: 1.1rem;
+}
+
+.mf-label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.mf-input {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: .92rem;
+  font-family: inherit;
+}
+
+textarea.mf-input {
+  resize: vertical;
+}
+
+input[type="color"].mf-input {
+  padding: 4px;
+  height: 42px;
+}
+
+.modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.modal-actions-right {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.modal-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modal-btn.ghost {
+  background: var(--surface-2);
+  color: var(--text-dim);
+}
+
+.modal-btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.modal-btn.danger {
+  background: rgba(239, 68, 68, .12);
+  color: var(--danger);
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .modal-overlay { align-items: center; }
+  .modal { border-radius: 20px; }
+}
+
+.day-choice-btns {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.day-choice-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.day-choice-btn:hover {
+  border-color: var(--accent);
+}
+
+.day-choice-btn .dc-icon {
+  font-size: 1.4rem;
+}
+
+.mc-cell.has-event, .mc-cell:not(.empty) {
+  cursor: pointer;
+}
+
 /* Calendario del cuatrimestre */
 .cuatri-toggle {
   display: flex;
