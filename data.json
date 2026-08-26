@@ -18,8 +18,7 @@
       "fecha": "2026-09-15",
       "hora": "10:00",
       "aula": "Aula 3",
-      "notas": "",
-      "nota": null
+      "notas": ""
     }
   ],
   "trabajos": [
@@ -28,9 +27,7 @@
       "asignatura": "Ejemplo: TIC en Educación",
       "titulo": "Trabajo de ejemplo",
       "fechaEntrega": "2026-09-10",
-      "notas": "",
-      "nota": null,
-      "completado": false
+      "notas": ""
     }
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "name": "calendario-magisterio-sync",
+  "private": true,
+  "type": "module",
+  "description": "Script auxiliar para sincronizar data.json con Firestore. La app en sí no necesita build ni Node, es estática.",
+  "scripts": {
+    "push": "node push-data.js"
+  },
+  "dependencies": {
+    "firebase": "^10.14.1"
+  }
+}

@@ -75,6 +75,17 @@ header.top .subtitle {
   font-size: .85rem;
 }
 
+.conn-error {
+  display: none;
+  margin: 12px 20px 0;
+  background: rgba(239, 68, 68, .12);
+  border: 1px solid rgba(239, 68, 68, .3);
+  color: var(--danger);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: .8rem;
+}
+
 .next-card {
   margin: 14px 20px 0;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -505,6 +516,7 @@ nav.bottom button.active { color: var(--accent); }
   header.top h1 { font-size: 1.6rem; }
 
   .next-card { margin: 18px 32px 0; padding: 20px 24px; }
+  .conn-error { margin: 12px 32px 0; }
 
   nav.tabs { padding: 20px 32px 8px; gap: 8px; }
   nav.tabs button { padding: 10px 20px; font-size: .92rem; }

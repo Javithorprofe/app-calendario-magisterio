@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Solo se puede leer/escribir el documento del calendario. Todo lo demás
+    // queda bloqueado por defecto.
+    match /magisterio/data {
+      allow read, write: if true;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

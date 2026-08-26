@@ -1,50 +1,60 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import { getFirestore, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { firebaseConfig, DOC_COLLECTION, DOC_ID } from "./firebase-config.js";
+
 const DIAS_ORDEN = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 const HOUR_HEIGHT = 56; // px por hora en el calendario semanal
 
-let DATA = { horario: [], examenes: [], trabajos: [] };
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+const docRef = doc(db, DOC_COLLECTION, DOC_ID);
 
-// --- Overlay local (por dispositivo): trabajos completados y notas apuntadas
-// desde el propio móvil/ordenador sin pasar por Claude. Si Claude escribe un
-// valor directamente en data.json, ese valor manda salvo que haya un override local.
-const OVERLAY_KEY = "magisterio_overlay_v1";
-let OVERLAY = { completado: {}, nota: {} };
+let DATA = { curso: "", horario: [], examenes: [], trabajos: [] };
+let CONNECTED = false;
 
-function loadOverlay() {
-  try {
-    const raw = localStorage.getItem(OVERLAY_KEY);
-    if (raw) OVERLAY = Object.assign({ completado: {}, nota: {} }, JSON.parse(raw));
-  } catch (e) { /* ignore */ }
+function mapToArray(map) {
+  return Object.entries(map || {}).map(([id, v]) => ({ id, ...v }));
 }
 
-function saveOverlay() {
-  try { localStorage.setItem(OVERLAY_KEY, JSON.stringify(OVERLAY)); } catch (e) { /* ignore */ }
+onSnapshot(docRef, snap => {
+  CONNECTED = true;
+  const d = snap.exists() ? snap.data() : {};
+  DATA = {
+    curso: d.curso || "",
+    horario: mapToArray(d.horario),
+    examenes: mapToArray(d.examenes),
+    trabajos: mapToArray(d.trabajos)
+  };
+  hideConnError();
+  render();
+}, err => {
+  showConnError(err);
+});
+
+function showConnError(err) {
+  const el = document.getElementById("connError");
+  el.style.display = "block";
+  el.textContent = "No se ha podido conectar con la base de datos (" + (err?.code || err?.message || "error") + "). Comprueba tu conexión.";
+}
+
+function hideConnError() {
+  document.getElementById("connError").style.display = "none";
 }
 
 function getCompletado(item) {
-  const o = OVERLAY.completado[item.id];
-  return o !== undefined ? o : !!item.completado;
+  return !!item.completado;
 }
 
 function setCompletado(item, val) {
-  OVERLAY.completado[item.id] = val;
-  saveOverlay();
+  updateDoc(docRef, { [`trabajos.${item.id}.completado`]: val }).catch(showConnError);
 }
 
 function getNota(item) {
-  const o = OVERLAY.nota[item.id];
-  if (o !== undefined) return o;
   return item.nota != null ? item.nota : null;
 }
 
-function setNota(item, val) {
-  OVERLAY.nota[item.id] = val;
-  saveOverlay();
-}
-
-async function loadData() {
-  const res = await fetch("data.json", { cache: "no-store" });
-  DATA = await res.json();
-  render();
+function setNota(item, kind, val) {
+  updateDoc(docRef, { [`${kind}.${item.id}.nota`]: val }).catch(showConnError);
 }
 
 function parseFecha(f) {
@@ -150,7 +160,7 @@ function renderHorario() {
   const maxHour = Math.max(15, ...ends);
   const totalHoras = maxHour - minHour;
 
-  const hoyStr = DIAS_ORDEN[(new Date().getDay() + 6) % 7]; // getDay: 0=domingo
+  const hoyStr = DIAS_ORDEN[(new Date().getDay() + 6) % 7];
   const ahoraMin = new Date().getHours() * 60 + new Date().getMinutes();
 
   let horas = "";
@@ -251,8 +261,6 @@ function renderTrabajos() {
     chk.addEventListener("click", () => {
       const item = DATA.trabajos.find(x => x.id === chk.dataset.id);
       setCompletado(item, !getCompletado(item));
-      renderTrabajos();
-      renderNextCard();
     });
   });
 }
@@ -262,8 +270,8 @@ function renderTrabajos() {
 function renderNotas() {
   const el = document.getElementById("view-notas");
   const items = [
-    ...DATA.examenes.map(e => ({ ...e, _tipo: "Examen", _titulo: e.asignatura, _fecha: e.fecha })),
-    ...DATA.trabajos.map(t => ({ ...t, _tipo: "Trabajo", _titulo: t.titulo, _fecha: t.fechaEntrega }))
+    ...DATA.examenes.map(e => ({ ...e, _tipo: "Examen", _titulo: e.asignatura, _fecha: e.fecha, _kind: "examenes" })),
+    ...DATA.trabajos.map(t => ({ ...t, _tipo: "Trabajo", _titulo: t.titulo, _fecha: t.fechaEntrega, _kind: "trabajos" }))
   ];
 
   if (items.length === 0) {
@@ -301,21 +309,19 @@ function renderNotas() {
           <div class="titulo">${escapeHtml(it._titulo)}</div>
           <div class="meta">${it._tipo === "Examen" ? "📝" : "📌"} ${it._tipo}${it._tipo === "Trabajo" ? " · " + escapeHtml(it.asignatura) : ""} · ${fmtFecha(it._fecha)}</div>
         </div>
-        <input class="nota-input" type="number" min="0" max="10" step="0.25" placeholder="–" value="${nota != null ? nota : ""}" data-id="${it.id}" data-kind="${it._tipo === "Examen" ? "examenes" : "trabajos"}">
+        <input class="nota-input" type="number" min="0" max="10" step="0.25" placeholder="–" value="${nota != null ? nota : ""}" data-id="${it.id}" data-kind="${it._kind}">
       </div>
     `;
   }).join("");
 
-  el.innerHTML = summary + `<div class="notas-list">${list}</div>
-    <div class="notas-hint">Las notas que escribes aquí se guardan en este dispositivo. Si quieres que se vean también en tus otros dispositivos, dime la nota y la guardo directamente en los datos del curso.</div>`;
+  el.innerHTML = summary + `<div class="notas-list">${list}</div>`;
 
   el.querySelectorAll(".nota-input").forEach(inp => {
     inp.addEventListener("change", () => {
       const kind = inp.dataset.kind;
       const item = DATA[kind].find(x => x.id === inp.dataset.id);
       const val = inp.value === "" ? null : Number(inp.value);
-      setNota(item, val);
-      render();
+      setNota(item, kind, val);
     });
   });
 }
@@ -343,9 +349,8 @@ function setupTabs() {
   });
 }
 
-loadOverlay();
 setupTabs();
-loadData();
+render();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
