@@ -525,7 +525,7 @@ function renderTrabajos() {
         ${t.notas ? `<div class="meta">${escapeHtml(t.notas)}</div>` : ""}
         <div class="fases">
           <button class="fase-chip ${entendido ? "active" : ""}" data-id="${t.id}" data-fase="entendido">
-            ${entendido ? "✓ " : ""}Entendido
+            ${entendido ? "✓ " : ""}Leído
           </button>
           <button class="fase-chip presentado ${presentado ? "active" : ""}" data-id="${t.id}" data-fase="presentado">
             ${presentado ? "✓ " : ""}Presentado
