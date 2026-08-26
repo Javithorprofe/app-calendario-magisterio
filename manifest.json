@@ -1,0 +1,19 @@
+{
+  "name": "Calendario Magisterio",
+  "short_name": "Magisterio",
+  "description": "Horario, exámenes y trabajos de la carrera",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f0f14",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
