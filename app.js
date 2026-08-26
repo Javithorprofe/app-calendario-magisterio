@@ -41,12 +41,19 @@ function hideConnError() {
   document.getElementById("connError").style.display = "none";
 }
 
-function getCompletado(item) {
-  return !!item.completado;
+function getEntendido(item) {
+  return !!item.entendido;
 }
 
-function setCompletado(item, val) {
-  updateDoc(docRef, { [`trabajos.${item.id}.completado`]: val }).catch(showConnError);
+function getPresentado(item) {
+  return !!item.presentado;
+}
+
+function setFase(item, fase, val) {
+  const update = { [`trabajos.${item.id}.${fase}`]: val };
+  // Presentar implica haber entendido el trabajo.
+  if (fase === "presentado" && val) update[`trabajos.${item.id}.entendido`] = true;
+  updateDoc(docRef, update).catch(showConnError);
 }
 
 function getNota(item) {
@@ -111,7 +118,7 @@ function renderNextCard() {
     if (dias >= 0) proximos.push({ tipo: "Examen", titulo: e.asignatura, fecha: e.fecha, hora: e.hora, dias });
   });
   DATA.trabajos.forEach(t => {
-    if (getCompletado(t)) return;
+    if (getPresentado(t)) return;
     const dias = diasRestantes(t.fechaEntrega);
     if (dias >= 0) proximos.push({ tipo: "Trabajo", titulo: t.titulo, fecha: t.fechaEntrega, hora: null, dias });
   });
@@ -192,7 +199,7 @@ function renderHorario() {
       nowLine = `<div class="now-line" style="top:${top}px"></div>`;
     }
 
-    cols += `<div class="day-col ${d === hoyStr ? "today" : ""}" style="height:${totalHoras * HOUR_HEIGHT}px;background-size:100% ${HOUR_HEIGHT}px">${bloques}${nowLine}</div>`;
+    cols += `<div class="day-col ${d === hoyStr ? "today" : ""}" style="height:${totalHoras * HOUR_HEIGHT}px">${bloques}${nowLine}</div>`;
   });
 
   el.innerHTML = `
@@ -241,26 +248,38 @@ function renderTrabajos() {
   el.innerHTML = ordenados.map((t) => {
     const dias = diasRestantes(t.fechaEntrega);
     const badge = badgeFor(dias);
-    const done = getCompletado(t);
+    const entendido = getEntendido(t);
+    const presentado = getPresentado(t);
     const nota = getNota(t);
     return `
-      <div class="list-card">
-        <div class="check ${done ? "done" : ""}" data-id="${t.id}">${done ? "✓" : ""}</div>
-        <div class="info">
-          <div class="titulo ${done ? "done" : ""}">${escapeHtml(t.titulo)}</div>
-          <div class="meta">${escapeHtml(t.asignatura)} · Entrega: ${fmtFecha(t.fechaEntrega)}</div>
-          ${t.notas ? `<div class="meta">${escapeHtml(t.notas)}</div>` : ""}
+      <div class="trabajo-card">
+        <div class="tc-top">
+          <div class="titulo ${presentado ? "done" : ""}">${escapeHtml(t.titulo)}</div>
+          <div class="tc-badges">
+            ${nota != null ? `<span class="grade-pill ${notaClass(nota)}">${nota}</span>` : ""}
+            <span class="badge ${badge.cls}">${badge.txt}</span>
+          </div>
         </div>
-        ${nota != null ? `<span class="grade-pill ${notaClass(nota)}">${nota}</span>` : ""}
-        <span class="badge ${badge.cls}">${badge.txt}</span>
+        <div class="meta">${escapeHtml(t.asignatura)} · Entrega: ${fmtFecha(t.fechaEntrega)}</div>
+        ${t.notas ? `<div class="meta">${escapeHtml(t.notas)}</div>` : ""}
+        <div class="fases">
+          <button class="fase-chip ${entendido ? "active" : ""}" data-id="${t.id}" data-fase="entendido">
+            ${entendido ? "✓ " : ""}Entendido
+          </button>
+          <button class="fase-chip presentado ${presentado ? "active" : ""}" data-id="${t.id}" data-fase="presentado">
+            ${presentado ? "✓ " : ""}Presentado
+          </button>
+        </div>
       </div>
     `;
   }).join("");
 
-  el.querySelectorAll(".check").forEach(chk => {
-    chk.addEventListener("click", () => {
-      const item = DATA.trabajos.find(x => x.id === chk.dataset.id);
-      setCompletado(item, !getCompletado(item));
+  el.querySelectorAll(".fase-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = DATA.trabajos.find(x => x.id === btn.dataset.id);
+      const fase = btn.dataset.fase;
+      const current = fase === "entendido" ? getEntendido(item) : getPresentado(item);
+      setFase(item, fase, !current);
     });
   });
 }
@@ -279,8 +298,6 @@ function renderNotas() {
     return;
   }
 
-  items.sort((a, b) => b._fecha.localeCompare(a._fecha));
-
   const notas = items.map(getNota).filter(n => n != null);
   const media = notas.length ? (notas.reduce((s, n) => s + Number(n), 0) / notas.length) : null;
 
@@ -288,7 +305,7 @@ function renderNotas() {
     <div class="notas-summary">
       <div class="ns-item">
         <div class="ns-value">${media != null ? media.toFixed(2) : "–"}</div>
-        <div class="ns-label">Media</div>
+        <div class="ns-label">Media general</div>
       </div>
       <div class="ns-item">
         <div class="ns-value">${notas.length}</div>
@@ -301,20 +318,46 @@ function renderNotas() {
     </div>
   `;
 
-  const list = items.map(it => {
-    const nota = getNota(it);
-    return `
-      <div class="nota-card">
-        <div class="info">
-          <div class="titulo">${escapeHtml(it._titulo)}</div>
-          <div class="meta">${it._tipo === "Examen" ? "📝" : "📌"} ${it._tipo}${it._tipo === "Trabajo" ? " · " + escapeHtml(it.asignatura) : ""} · ${fmtFecha(it._fecha)}</div>
+  // Nota: de momento la media de cada asignatura es la media simple de sus
+  // notas. En cuanto me pases las ponderaciones de cada asignatura, la
+  // cambio para que sea la nota final ponderada.
+  const porAsignatura = {};
+  items.forEach(it => {
+    const key = it.asignatura || "Sin asignatura";
+    (porAsignatura[key] = porAsignatura[key] || []).push(it);
+  });
+  const asignaturas = Object.keys(porAsignatura).sort((a, b) => a.localeCompare(b, "es"));
+
+  const bloques = asignaturas.map(asig => {
+    const arr = porAsignatura[asig].slice().sort((a, b) => b._fecha.localeCompare(a._fecha));
+    const notasAsig = arr.map(getNota).filter(n => n != null);
+    const mediaAsig = notasAsig.length ? (notasAsig.reduce((s, n) => s + Number(n), 0) / notasAsig.length) : null;
+
+    const list = arr.map(it => {
+      const nota = getNota(it);
+      return `
+        <div class="nota-card">
+          <div class="info">
+            <div class="titulo">${escapeHtml(it._titulo)}</div>
+            <div class="meta">${it._tipo === "Examen" ? "📝" : "📌"} ${it._tipo} · ${fmtFecha(it._fecha)}</div>
+          </div>
+          <input class="nota-input" type="number" min="0" max="10" step="0.25" placeholder="–" value="${nota != null ? nota : ""}" data-id="${it.id}" data-kind="${it._kind}">
         </div>
-        <input class="nota-input" type="number" min="0" max="10" step="0.25" placeholder="–" value="${nota != null ? nota : ""}" data-id="${it.id}" data-kind="${it._kind}">
+      `;
+    }).join("");
+
+    return `
+      <div class="asig-block">
+        <div class="asig-head">
+          <span class="asig-name">${escapeHtml(asig)}</span>
+          ${mediaAsig != null ? `<span class="grade-pill ${notaClass(mediaAsig)}">${mediaAsig.toFixed(2)}</span>` : ""}
+        </div>
+        <div class="notas-list">${list}</div>
       </div>
     `;
   }).join("");
 
-  el.innerHTML = summary + `<div class="notas-list">${list}</div>`;
+  el.innerHTML = summary + bloques;
 
   el.querySelectorAll(".nota-input").forEach(inp => {
     inp.addEventListener("change", () => {

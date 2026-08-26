@@ -12,6 +12,7 @@
   --ok: #10b981;
   --radius: 16px;
   --shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.04);
+  --border-soft: rgba(0,0,0,.045);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +24,7 @@
     --text-dim: #9a9aa6;
     --border: #2c2c38;
     --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
+    --border-soft: rgba(255,255,255,.05);
   }
 }
 
@@ -210,25 +212,6 @@ section.view.active { display: block; }
   box-shadow: var(--shadow);
 }
 
-.list-card .check {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  flex-shrink: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: .75rem;
-}
-
-.list-card .check.done {
-  background: var(--ok);
-  border-color: var(--ok);
-}
-
 .list-card .info { flex: 1; min-width: 0; }
 
 .list-card .titulo {
@@ -261,6 +244,77 @@ section.view.active { display: block; }
 .badge.normal { background: rgba(99,102,241,.15); color: var(--accent); }
 .badge.past { background: var(--surface-2); color: var(--text-dim); }
 
+/* Trabajos: tarjeta con dos fases (Entendido / Presentado) */
+.trabajo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow);
+}
+
+.trabajo-card .tc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.trabajo-card .tc-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.trabajo-card .titulo {
+  font-weight: 600;
+  font-size: .93rem;
+}
+
+.trabajo-card .titulo.done {
+  text-decoration: line-through;
+  color: var(--text-dim);
+}
+
+.trabajo-card .meta {
+  color: var(--text-dim);
+  font-size: .8rem;
+  margin-top: 2px;
+}
+
+.trabajo-card .fases {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.fase-chip {
+  flex: 1;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.fase-chip.active {
+  background: rgba(99, 102, 241, .15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.fase-chip.presentado.active {
+  background: rgba(16, 185, 129, .15);
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
 .empty-state {
   text-align: center;
   color: var(--text-dim);
@@ -279,6 +333,10 @@ section.view.active { display: block; }
 
 .week-header, .week-body {
   display: grid;
+}
+
+.week-body {
+  padding-top: 10px;
 }
 
 .week-header {
@@ -328,7 +386,10 @@ section.view.active { display: block; }
 .day-col {
   position: relative;
   border-left: 1px solid var(--border);
-  background-image: repeating-linear-gradient(to bottom, var(--border) 0, var(--border) 1px, transparent 1px, transparent 56px);
+  /* Línea fuerte cada hora (encima) + línea suave cada media hora (debajo) */
+  background-image:
+    repeating-linear-gradient(to bottom, var(--border) 0, var(--border) 1px, transparent 1px, transparent 56px),
+    repeating-linear-gradient(to bottom, var(--border-soft) 0, var(--border-soft) 1px, transparent 1px, transparent 28px);
 }
 
 .day-col.today {
@@ -418,8 +479,27 @@ section.view.active { display: block; }
   margin-top: 2px;
 }
 
+.asig-block {
+  margin-top: 20px;
+}
+
+.asig-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.asig-name {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-dim);
+}
+
 .notas-list {
-  margin-top: 14px;
+  margin-top: 0;
 }
 
 .nota-card {
@@ -530,7 +610,7 @@ nav.bottom button.active { color: var(--accent); }
     gap: 10px;
     align-content: start;
   }
-  #view-examenes .list-card, #view-trabajos .list-card, .notas-list .nota-card {
+  #view-examenes .list-card, #view-trabajos .trabajo-card, .notas-list .nota-card {
     margin-bottom: 0;
   }
 
