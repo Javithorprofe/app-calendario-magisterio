@@ -46,6 +46,106 @@
   --shadow: 0 1px 3px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25);
 }
 
+:root[data-style="agenda"] {
+  --bg: #f4ecd8;
+  --surface: #fffaf0;
+  --surface-2: #ece0c4;
+  --text: #2b2016;
+  --text-dim: #6b5c46;
+  --border: #b8a67e;
+  --border-soft: rgba(43,32,22,.14);
+  --accent: #7a2331;
+  --accent-2: #a8425a;
+  --ok: #3f6d3f;
+  --warn: #a67c1f;
+  --danger: #7a2331;
+  --shadow: 0 1px 2px rgba(43,32,22,.15), 0 4px 10px rgba(43,32,22,.1);
+  --font-heading: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+}
+
+:root[data-style="pared"] {
+  --bg: #f7f7f3;
+  --surface: #ffffff;
+  --surface-2: #ececec;
+  --text: #1a1a1a;
+  --text-dim: #55554f;
+  --border: #1a1a1a;
+  --border-soft: rgba(0,0,0,.16);
+  --accent: #b3121b;
+  --accent-2: #d4291f;
+  --ok: #1f7a3d;
+  --warn: #b3121b;
+  --danger: #b3121b;
+  --shadow: 0 2px 0 rgba(0,0,0,.1);
+  --font-heading: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+}
+
+/* Detalles "de papel": esquinas cuadradas, bordes marcados, cabecera en
+   banda de color y tipografía clásica en los títulos. */
+header.top h1, .next-card .title, .month-title, .modal h3, .asig-name {
+  font-family: var(--font-heading, inherit);
+}
+
+:root[data-style="agenda"] header.top,
+:root[data-style="pared"] header.top {
+  background: var(--accent);
+  margin: 0 0 4px;
+}
+
+:root[data-style="agenda"] header.top h1, :root[data-style="agenda"] header.top .subtitle,
+:root[data-style="pared"] header.top h1, :root[data-style="pared"] header.top .subtitle {
+  color: #fff;
+}
+:root[data-style="agenda"] header.top .subtitle, :root[data-style="pared"] header.top .subtitle {
+  color: rgba(255,255,255,.82);
+}
+
+:root[data-style="agenda"] .next-card, :root[data-style="pared"] .next-card,
+:root[data-style="agenda"] .month-card, :root[data-style="pared"] .month-card,
+:root[data-style="agenda"] .list-card, :root[data-style="pared"] .list-card,
+:root[data-style="agenda"] .trabajo-card, :root[data-style="pared"] .trabajo-card,
+:root[data-style="agenda"] .nota-card, :root[data-style="pared"] .nota-card,
+:root[data-style="agenda"] .modal, :root[data-style="pared"] .modal,
+:root[data-style="agenda"] .week-wrap, :root[data-style="pared"] .week-wrap {
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+:root[data-style="pared"] .next-card, :root[data-style="pared"] .month-card,
+:root[data-style="pared"] .list-card, :root[data-style="pared"] .trabajo-card,
+:root[data-style="pared"] .nota-card, :root[data-style="pared"] .week-wrap {
+  border-width: 2px;
+  box-shadow: none;
+}
+
+:root[data-style="agenda"] nav.tabs button, :root[data-style="pared"] nav.tabs button,
+:root[data-style="agenda"] .add-btn, :root[data-style="pared"] .add-btn,
+:root[data-style="agenda"] .week-nav-btn, :root[data-style="pared"] .week-nav-btn,
+:root[data-style="agenda"] .badge, :root[data-style="pared"] .badge,
+:root[data-style="agenda"] .grade-pill, :root[data-style="pared"] .grade-pill,
+:root[data-style="agenda"] .cuatri-toggle button, :root[data-style="pared"] .cuatri-toggle button,
+:root[data-style="agenda"] .fase-chip, :root[data-style="pared"] .fase-chip {
+  border-radius: 3px;
+}
+
+:root[data-style="agenda"] .class-block, :root[data-style="pared"] .class-block {
+  border-radius: 2px;
+  border: 1px solid rgba(0,0,0,.25);
+}
+
+:root[data-style="agenda"] .mc-cell.today, :root[data-style="pared"] .mc-cell.today {
+  background: transparent;
+  box-shadow: none;
+}
+:root[data-style="agenda"] .mc-cell.today .mc-num, :root[data-style="pared"] .mc-cell.today .mc-num {
+  background: transparent;
+  border: 2px solid var(--danger);
+  color: var(--danger);
+}
+:root[data-style="pared"] .mc-dow:nth-child(7) {
+  color: var(--danger);
+}
+
 /* El resto, con fondo claro y recuadros en color pastel. */
 
 :root[data-style="verde"] {
