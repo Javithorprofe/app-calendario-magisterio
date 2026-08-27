@@ -80,64 +80,84 @@
   --font-heading: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
 }
 
+:root[data-style="agenda-pastel"] {
+  --bg: #faf1e6;
+  --surface: #fffaf5;
+  --surface-2: #f3e6da;
+  --text: #40303a;
+  --text-dim: #8a7480;
+  --border: #ddbdc4;
+  --border-soft: rgba(64,48,58,.1);
+  --accent: #d68fa0;
+  --accent-2: #e8b4c0;
+  --ok: #7fb69a;
+  --warn: #d6a24d;
+  --danger: #c96a7a;
+  --shadow: 0 1px 2px rgba(64,48,58,.1), 0 4px 10px rgba(64,48,58,.08);
+  --font-heading: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+}
+
+:root[data-style="agenda-moderno"] {
+  --bg: #f4f6f6;
+  --surface: #ffffff;
+  --surface-2: #e7edee;
+  --text: #16232b;
+  --text-dim: #55666f;
+  --border: #1f3a3a;
+  --border-soft: rgba(22,35,43,.1);
+  --accent: #0f6e6e;
+  --accent-2: #ff6b5b;
+  --ok: #1f9d70;
+  --warn: #d68f1f;
+  --danger: #d6483a;
+  --shadow: 0 1px 2px rgba(22,35,43,.1), 0 4px 10px rgba(22,35,43,.08);
+  --font-heading: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+}
+
 /* Detalles "de papel": esquinas cuadradas, bordes marcados, cabecera en
-   banda de color y tipografía clásica en los títulos. */
+   banda de color y tipografía clásica en los títulos. Comparten esta
+   estructura los 4 estilos "de agenda/calendario"; solo cambia su paleta. */
 header.top h1, .next-card .title, .month-title, .modal h3, .asig-name {
   font-family: var(--font-heading, inherit);
 }
 
-:root[data-style="agenda"] header.top,
-:root[data-style="pared"] header.top {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) header.top {
   background: var(--accent);
   margin: 0 0 4px;
 }
 
-:root[data-style="agenda"] header.top h1, :root[data-style="agenda"] header.top .subtitle,
-:root[data-style="pared"] header.top h1, :root[data-style="pared"] header.top .subtitle {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) header.top h1,
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) header.top .subtitle {
   color: #fff;
 }
-:root[data-style="agenda"] header.top .subtitle, :root[data-style="pared"] header.top .subtitle {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) header.top .subtitle {
   color: rgba(255,255,255,.82);
 }
 
-:root[data-style="agenda"] .next-card, :root[data-style="pared"] .next-card,
-:root[data-style="agenda"] .month-card, :root[data-style="pared"] .month-card,
-:root[data-style="agenda"] .list-card, :root[data-style="pared"] .list-card,
-:root[data-style="agenda"] .trabajo-card, :root[data-style="pared"] .trabajo-card,
-:root[data-style="agenda"] .nota-card, :root[data-style="pared"] .nota-card,
-:root[data-style="agenda"] .modal, :root[data-style="pared"] .modal,
-:root[data-style="agenda"] .week-wrap, :root[data-style="pared"] .week-wrap {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) :is(.next-card, .month-card, .list-card, .trabajo-card, .nota-card, .modal, .week-wrap) {
   border-radius: 4px;
   border: 1px solid var(--border);
 }
 
-:root[data-style="pared"] .next-card, :root[data-style="pared"] .month-card,
-:root[data-style="pared"] .list-card, :root[data-style="pared"] .trabajo-card,
-:root[data-style="pared"] .nota-card, :root[data-style="pared"] .week-wrap {
+:root[data-style="pared"] :is(.next-card, .month-card, .list-card, .trabajo-card, .nota-card, .week-wrap) {
   border-width: 2px;
   box-shadow: none;
 }
 
-:root[data-style="agenda"] nav.tabs button, :root[data-style="pared"] nav.tabs button,
-:root[data-style="agenda"] .add-btn, :root[data-style="pared"] .add-btn,
-:root[data-style="agenda"] .week-nav-btn, :root[data-style="pared"] .week-nav-btn,
-:root[data-style="agenda"] .badge, :root[data-style="pared"] .badge,
-:root[data-style="agenda"] .grade-pill, :root[data-style="pared"] .grade-pill,
-:root[data-style="agenda"] .cuatri-toggle button, :root[data-style="pared"] .cuatri-toggle button,
-:root[data-style="agenda"] .fase-chip, :root[data-style="pared"] .fase-chip {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) :is(nav.tabs button, .add-btn, .week-nav-btn, .badge, .grade-pill, .cuatri-toggle button, .fase-chip) {
   border-radius: 3px;
 }
 
-:root[data-style="agenda"] .class-block, :root[data-style="pared"] .class-block {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) .class-block {
   border-radius: 2px;
   border: 1px solid rgba(0,0,0,.25);
 }
 
-:root[data-style="agenda"] .mc-cell.today, :root[data-style="pared"] .mc-cell.today {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) .mc-cell.today {
   background: transparent;
   box-shadow: none;
 }
-:root[data-style="agenda"] .mc-cell.today .mc-num, :root[data-style="pared"] .mc-cell.today .mc-num {
+:root:is([data-style="agenda"], [data-style="pared"], [data-style="agenda-pastel"], [data-style="agenda-moderno"]) .mc-cell.today .mc-num {
   background: transparent;
   border: 2px solid var(--danger);
   color: var(--danger);
