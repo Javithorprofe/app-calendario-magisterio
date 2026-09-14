@@ -6,6 +6,11 @@ const DIAS_ORDEN = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sába
 const MESES_NOMBRE = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 const HOUR_HEIGHT = 56; // px por hora en el calendario semanal
 
+function colorDeAsignatura(nombre) {
+  const a = ASIGNATURAS.find(x => x.nombre === nombre);
+  return a ? a.color : "#6366f1";
+}
+
 function pad2(n) {
   return String(n).padStart(2, "0");
 }
@@ -33,9 +38,11 @@ let WEEK_START = mondayOf(new Date());
 // nombre sea siempre exactamente igual y el color consistente en toda la
 // app. PENDIENTE: sustituir por la lista real en cuanto Javier la pase.
 const ASIGNATURAS = [
-  { nombre: "Ejemplo: Psicología del Desarrollo", color: "#6366f1" },
-  { nombre: "Ejemplo: Didáctica General", color: "#ec4899" },
-  { nombre: "Ejemplo: TIC en Educación", color: "#10b981" }
+  { nombre: "Currículo y Sistema Educativo", color: "#6366f1" },
+  { nombre: "Organización y Planificación Escolar", color: "#ec4899" },
+  { nombre: "Educación para la Paz y la Igualdad", color: "#10b981" },
+  { nombre: "TIC Aplicadas a la Educación", color: "#f59e0b" },
+  { nombre: "Inglés I", color: "#0ea5e9" }
 ];
 
 const fbApp = initializeApp(firebaseConfig);
@@ -206,6 +213,21 @@ function claseAplicaSemana(c, weekStart) {
 }
 
 // Día de la semana en el que cae una clase ya filtrada para "esta semana".
+// Lunes de la semana 1 de cada cuatrimestre conocido. Añade aquí el del 2º
+// cuatrimestre en cuanto se sepa.
+const INICIO_SEMANA1 = { 1: "2026-09-14" };
+
+// Nº de semana del cuatrimestre para la semana que empieza en weekStart, o
+// null si esa semana cae fuera de cualquier cuatrimestre conocido.
+function numeroSemanaCuatri(weekStart) {
+  for (const inicio of Object.values(INICIO_SEMANA1)) {
+    const lunes1 = mondayOf(parseFecha(inicio));
+    const n = Math.round((weekStart - lunes1) / (7 * 86400000)) + 1;
+    if (n >= 1 && n <= 20) return n;
+  }
+  return null;
+}
+
 function diaDeClase(c) {
   if ((c.repite || "semanal") === "puntual" && c.fecha) {
     return DIAS_ORDEN[(parseFecha(c.fecha).getDay() + 6) % 7];
@@ -218,7 +240,7 @@ function diaDeClase(c) {
 function subjectLegendHtml() {
   const vistas = new Map();
   (DATA.horario || []).forEach(c => {
-    if (c.asignatura && !vistas.has(c.asignatura)) vistas.set(c.asignatura, c.color || "#6366f1");
+    if (c.asignatura && !vistas.has(c.asignatura)) vistas.set(c.asignatura, c.color || colorDeAsignatura(c.asignatura));
   });
   if (vistas.size === 0) return "";
   const chips = Array.from(vistas.entries()).map(([nombre, color]) =>
@@ -234,11 +256,13 @@ function renderHorario() {
   const weekEnd = addDays(WEEK_START, 6);
   const esSemanaActual = WEEK_START.getTime() === mondayOf(new Date()).getTime();
   const weekLabel = `${WEEK_START.getDate()} ${MESES_NOMBRE[WEEK_START.getMonth() + 1].slice(0, 3).toLowerCase()} – ${weekEnd.getDate()} ${MESES_NOMBRE[weekEnd.getMonth() + 1].slice(0, 3).toLowerCase()}`;
+  const numSemana = numeroSemanaCuatri(WEEK_START);
   const nav = `
     <div class="week-nav">
       <button class="week-nav-btn" id="weekPrev" aria-label="Semana anterior">‹</button>
       <div class="week-nav-center">
         <div class="week-nav-label">${weekLabel}</div>
+        ${numSemana != null ? `<div class="week-nav-semana">Semana ${numSemana} del cuatrimestre</div>` : ""}
         <button class="week-today-btn ${esSemanaActual ? "current" : ""}" id="weekToday">Semana actual</button>
       </div>
       <button class="week-nav-btn" id="weekNext" aria-label="Semana siguiente">›</button>
@@ -289,7 +313,7 @@ function renderHorario() {
       const etiqueta = c.repite === "puntual" ? " · puntual" : c.repite === "quincenal" ? " · quincenal" : "";
       const tip = `${c.asignatura}${c.aula ? " · " + c.aula : ""}${etiqueta}`;
       return `
-        <div class="class-block" data-id="${c.id}" style="top:${top}px;height:${height}px;background:${c.color || "#6366f1"}" title="${escapeAttr(tip)}">
+        <div class="class-block" data-id="${c.id}" style="top:${top}px;height:${height}px;background:${c.color || colorDeAsignatura(c.asignatura)}" title="${escapeAttr(tip)}">
           <div class="cb-time">${c.inicio}–${c.fin}</div>
         </div>`;
     }).join("");

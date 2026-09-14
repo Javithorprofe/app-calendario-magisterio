@@ -1,33 +1,32 @@
 {
-  "curso": "1º Magisterio",
+  "curso": "1º Educación Primaria - Grupo 1",
   "horario": [
-    {
-      "id": "cl1",
-      "dia": "Lunes",
-      "inicio": "09:00",
-      "fin": "11:00",
-      "asignatura": "Ejemplo: Psicología del Desarrollo",
-      "aula": "Aula 12",
-      "color": "#6366f1"
-    }
+    { "id": "cl_tic_lun", "dia": "Lunes", "inicio": "08:00", "fin": "09:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001" },
+    { "id": "cl_org_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
+
+    { "id": "cl_paz_mar", "dia": "Martes", "inicio": "08:00", "fin": "09:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
+    { "id": "cl_tic_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001" },
+    { "id": "cl_cur_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
+
+    { "id": "cl_paz_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
+    { "id": "cl_org_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
+
+    { "id": "cl_cur_jue", "dia": "Jueves", "inicio": "09:00", "fin": "10:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
+    { "id": "cl_ing_teoria_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría" },
+    { "id": "cl_tic_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001" },
+
+    { "id": "cl_org_vie", "dia": "Viernes", "inicio": "08:00", "fin": "09:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
+    { "id": "cl_cur_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
+    { "id": "cl_paz_vie", "dia": "Viernes", "inicio": "12:00", "fin": "14:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
+
+    { "id": "cl_ing_s1_lun", "dia": "Lunes", "inicio": "12:00", "fin": "14:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Presentación del curso (Teoría y Práctica)", "repite": "puntual", "fecha": "2026-09-14" },
+    { "id": "cl_ing_s1_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (grupos 1 y 2 juntos)", "repite": "puntual", "fecha": "2026-09-16" },
+    { "id": "cl_ing_s2_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-23" },
+    { "id": "cl_ing_s3_lun", "dia": "Lunes", "inicio": "12:00", "fin": "14:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-28" },
+    { "id": "cl_ing_s4_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-07" }
   ],
   "examenes": [
-    {
-      "id": "ex1",
-      "asignatura": "Ejemplo: Didáctica General",
-      "fecha": "2026-09-15",
-      "hora": "10:00",
-      "aula": "Aula 3",
-      "notas": ""
-    }
+    { "id": "ex_ing_mock", "asignatura": "Inglés I", "fecha": "2026-10-08", "hora": "10:00", "aula": "A001", "notas": "Mock Teoría y Práctica (30 marks) - última semana con Marta Sordo" }
   ],
-  "trabajos": [
-    {
-      "id": "tr1",
-      "asignatura": "Ejemplo: TIC en Educación",
-      "titulo": "Trabajo de ejemplo",
-      "fechaEntrega": "2026-09-10",
-      "notas": ""
-    }
-  ]
+  "trabajos": []
 }

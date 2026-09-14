@@ -609,6 +609,13 @@ section.view.active { display: block; }
   white-space: nowrap;
 }
 
+.week-nav-semana {
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 1px;
+}
+
 .week-today-btn {
   font-size: .72rem;
   font-weight: 700;
