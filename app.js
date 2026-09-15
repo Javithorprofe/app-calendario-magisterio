@@ -198,12 +198,21 @@ function toMinutes(hhmm) {
 }
 
 // ¿Esta clase toca en la semana que empieza en weekStart (lunes, Date)?
+// Lunes de la semana 1 conocida más antigua (de cualquier cuatrimestre en
+// INICIO_SEMANA1). Las clases semanales/quincenales no se muestran antes.
+function primeraSemanaConocida() {
+  const lunes = Object.values(INICIO_SEMANA1).map(f => mondayOf(parseFecha(f)).getTime());
+  return lunes.length ? Math.min(...lunes) : null;
+}
+
 function claseAplicaSemana(c, weekStart) {
   const repite = c.repite || "semanal";
   if (repite === "puntual") {
     if (!c.fecha) return false;
     return mondayOf(parseFecha(c.fecha)).getTime() === weekStart.getTime();
   }
+  const primeraSemana = primeraSemanaConocida();
+  if (primeraSemana != null && weekStart.getTime() < primeraSemana) return false;
   if (repite === "quincenal") {
     if (!c.fechaRef) return true; // sin referencia todavía: se muestra siempre
     const refMonday = mondayOf(parseFecha(c.fechaRef));
