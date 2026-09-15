@@ -24,42 +24,42 @@
 
     { "id": "tic_s1_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "Salón de Actos", "notas": "Bienvenida al curso", "repite": "puntual", "fecha": "2026-09-14" },
     { "id": "tic_s1_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-15" },
-    { "id": "tic_s1_jue", "dia": "Jueves", "inicio": "13:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-17" },
+    { "id": "tic_s1_jue", "dia": "Jueves", "inicio": "12:00", "fin": "13:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-09-17" },
 
     { "id": "tic_s2_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-21" },
-    { "id": "tic_s2_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-22" },
+    { "id": "tic_s2_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-09-24" },
 
     { "id": "tic_s3_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-28" },
-    { "id": "tic_s3_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-01" },
+    { "id": "tic_s3_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-09-29" },
 
     { "id": "tic_s4_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-05" },
-    { "id": "tic_s4_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-06" },
+    { "id": "tic_s4_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-08" },
 
-    { "id": "tic_s5_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-15" },
+    { "id": "tic_s5_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-13" },
 
     { "id": "tic_s6_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-19" },
-    { "id": "tic_s6_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-20" },
+    { "id": "tic_s6_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-22" },
 
     { "id": "tic_s7_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-26" },
-    { "id": "tic_s7_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-29" },
+    { "id": "tic_s7_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-27" },
 
-    { "id": "tic_s8_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-03" },
+    { "id": "tic_s8_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-05" },
 
     { "id": "tic_s9_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-11-09" },
-    { "id": "tic_s9_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-12" },
+    { "id": "tic_s9_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-10" },
 
-    { "id": "tic_s10_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-16" },
+    { "id": "tic_s10_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-17" },
 
-    { "id": "tic_s11_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-24" },
-    { "id": "tic_s11_jue", "dia": "Jueves", "inicio": "13:30", "fin": "15:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-26" },
+    { "id": "tic_s11_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-23" },
+    { "id": "tic_s11_jue", "dia": "Jueves", "inicio": "12:00", "fin": "13:30", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-26" },
 
-    { "id": "tic_s12_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-30" },
-    { "id": "tic_s12_jue", "dia": "Jueves", "inicio": "12:00", "fin": "13:30", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-03" },
+    { "id": "tic_s12_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-12-01" },
+    { "id": "tic_s12_jue", "dia": "Jueves", "inicio": "13:30", "fin": "15:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-12-03" },
 
-    { "id": "tic_s13_jue", "dia": "Jueves", "inicio": "13:30", "fin": "15:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-10" },
+    { "id": "tic_s13_jue", "dia": "Jueves", "inicio": "12:00", "fin": "13:30", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-12-10" },
 
-    { "id": "tic_s14_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-15" },
-    { "id": "tic_s14_jue", "dia": "Jueves", "inicio": "13:30", "fin": "15:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-17" }
+    { "id": "tic_s14_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-12-14" },
+    { "id": "tic_s14_jue", "dia": "Jueves", "inicio": "12:00", "fin": "13:30", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-12-17" }
   ],
   "examenes": [
     { "id": "ex_ing_mock", "asignatura": "Inglés I", "fecha": "2026-10-08", "hora": "10:00", "aula": "A001", "notas": "Mock Teoría y Práctica (30 marks) - última semana con Marta Sordo" }
