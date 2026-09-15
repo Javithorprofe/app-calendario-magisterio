@@ -1,11 +1,9 @@
 {
   "curso": "1º Educación Primaria - Grupo 1",
   "horario": [
-    { "id": "cl_tic_lun", "dia": "Lunes", "inicio": "08:00", "fin": "09:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001" },
     { "id": "cl_org_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
 
     { "id": "cl_paz_mar", "dia": "Martes", "inicio": "08:00", "fin": "09:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
-    { "id": "cl_tic_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001" },
     { "id": "cl_cur_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
 
     { "id": "cl_paz_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
@@ -13,7 +11,6 @@
 
     { "id": "cl_cur_jue", "dia": "Jueves", "inicio": "09:00", "fin": "10:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
     { "id": "cl_ing_teoria_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría" },
-    { "id": "cl_tic_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001" },
 
     { "id": "cl_org_vie", "dia": "Viernes", "inicio": "08:00", "fin": "09:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
     { "id": "cl_cur_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
@@ -23,7 +20,46 @@
     { "id": "cl_ing_s1_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (grupos 1 y 2 juntos)", "repite": "puntual", "fecha": "2026-09-16" },
     { "id": "cl_ing_s2_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-23" },
     { "id": "cl_ing_s3_lun", "dia": "Lunes", "inicio": "12:00", "fin": "14:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-28" },
-    { "id": "cl_ing_s4_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-07" }
+    { "id": "cl_ing_s4_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-07" },
+
+    { "id": "tic_s1_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "Salón de Actos", "notas": "Bienvenida al curso", "repite": "puntual", "fecha": "2026-09-14" },
+    { "id": "tic_s1_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-15" },
+    { "id": "tic_s1_jue", "dia": "Jueves", "inicio": "13:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-17" },
+
+    { "id": "tic_s2_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-21" },
+    { "id": "tic_s2_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-09-22" },
+
+    { "id": "tic_s3_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-28" },
+    { "id": "tic_s3_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-01" },
+
+    { "id": "tic_s4_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-05" },
+    { "id": "tic_s4_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-06" },
+
+    { "id": "tic_s5_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-15" },
+
+    { "id": "tic_s6_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-19" },
+    { "id": "tic_s6_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-20" },
+
+    { "id": "tic_s7_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-26" },
+    { "id": "tic_s7_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-10-29" },
+
+    { "id": "tic_s8_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-03" },
+
+    { "id": "tic_s9_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-11-09" },
+    { "id": "tic_s9_jue", "dia": "Jueves", "inicio": "12:00", "fin": "14:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-12" },
+
+    { "id": "tic_s10_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-16" },
+
+    { "id": "tic_s11_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-24" },
+    { "id": "tic_s11_jue", "dia": "Jueves", "inicio": "13:30", "fin": "15:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-26" },
+
+    { "id": "tic_s12_lun", "dia": "Lunes", "inicio": "08:00", "fin": "10:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-11-30" },
+    { "id": "tic_s12_jue", "dia": "Jueves", "inicio": "12:00", "fin": "13:30", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-03" },
+
+    { "id": "tic_s13_jue", "dia": "Jueves", "inicio": "13:30", "fin": "15:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-10" },
+
+    { "id": "tic_s14_mar", "dia": "Martes", "inicio": "10:00", "fin": "12:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-15" },
+    { "id": "tic_s14_jue", "dia": "Jueves", "inicio": "13:30", "fin": "15:00", "asignatura": "TIC Aplicadas a la Educación", "aula": "A001", "notas": "Práctica (subgrupo 2)", "repite": "puntual", "fecha": "2026-12-17" }
   ],
   "examenes": [
     { "id": "ex_ing_mock", "asignatura": "Inglés I", "fecha": "2026-10-08", "hora": "10:00", "aula": "A001", "notas": "Mock Teoría y Práctica (30 marks) - última semana con Marta Sordo" }
