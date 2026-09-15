@@ -197,22 +197,30 @@ function toMinutes(hhmm) {
   return h * 60 + m;
 }
 
-// ¿Esta clase toca en la semana que empieza en weekStart (lunes, Date)?
-// Lunes de la semana 1 conocida más antigua (de cualquier cuatrimestre en
-// INICIO_SEMANA1). Las clases semanales/quincenales no se muestran antes.
-function primeraSemanaConocida() {
-  const lunes = Object.values(INICIO_SEMANA1).map(f => mondayOf(parseFecha(f)).getTime());
-  return lunes.length ? Math.min(...lunes) : null;
+// Cuatrimestres conocidos: lunes de la semana 1 y lunes de la última semana
+// con clase. Añade aquí el 2º cuatrimestre en cuanto se sepa su horario —
+// hasta entonces, fuera de estos rangos no se muestra ninguna clase fija.
+const CUATRIMESTRES = [
+  { inicioSemana1: "2026-09-14", finUltimaSemana: "2026-12-14" } // 1er cuatrimestre: semanas 1-14
+];
+
+// ¿weekStart (lunes) cae dentro de algún cuatrimestre conocido?
+function semanaDentroDeCuatriConocido(weekStart) {
+  return CUATRIMESTRES.some(c => {
+    const ini = mondayOf(parseFecha(c.inicioSemana1)).getTime();
+    const fin = mondayOf(parseFecha(c.finUltimaSemana)).getTime();
+    return weekStart.getTime() >= ini && weekStart.getTime() <= fin;
+  });
 }
 
+// ¿Esta clase toca en la semana que empieza en weekStart (lunes, Date)?
 function claseAplicaSemana(c, weekStart) {
   const repite = c.repite || "semanal";
   if (repite === "puntual") {
     if (!c.fecha) return false;
     return mondayOf(parseFecha(c.fecha)).getTime() === weekStart.getTime();
   }
-  const primeraSemana = primeraSemanaConocida();
-  if (primeraSemana != null && weekStart.getTime() < primeraSemana) return false;
+  if (!semanaDentroDeCuatriConocido(weekStart)) return false;
   if (repite === "quincenal") {
     if (!c.fechaRef) return true; // sin referencia todavía: se muestra siempre
     const refMonday = mondayOf(parseFecha(c.fechaRef));
@@ -222,16 +230,11 @@ function claseAplicaSemana(c, weekStart) {
   return true; // semanal
 }
 
-// Día de la semana en el que cae una clase ya filtrada para "esta semana".
-// Lunes de la semana 1 de cada cuatrimestre conocido. Añade aquí el del 2º
-// cuatrimestre en cuanto se sepa.
-const INICIO_SEMANA1 = { 1: "2026-09-14" };
-
 // Nº de semana del cuatrimestre para la semana que empieza en weekStart, o
 // null si esa semana cae fuera de cualquier cuatrimestre conocido.
 function numeroSemanaCuatri(weekStart) {
-  for (const inicio of Object.values(INICIO_SEMANA1)) {
-    const lunes1 = mondayOf(parseFecha(inicio));
+  for (const c of CUATRIMESTRES) {
+    const lunes1 = mondayOf(parseFecha(c.inicioSemana1));
     const n = Math.round((weekStart - lunes1) / (7 * 86400000)) + 1;
     if (n >= 1 && n <= 20) return n;
   }
