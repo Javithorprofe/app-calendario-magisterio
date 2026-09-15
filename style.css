@@ -1105,8 +1105,7 @@ input[type="color"].mf-input {
 }
 .mc-cell.festivo .mc-num {
   color: var(--danger);
-  opacity: .75;
-  text-decoration: line-through;
+  font-weight: 800;
 }
 .mc-dot.festivo { background: var(--text-dim); }
 
