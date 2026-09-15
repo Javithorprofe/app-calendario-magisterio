@@ -49,7 +49,7 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getFirestore(fbApp);
 const docRef = doc(db, DOC_COLLECTION, DOC_ID);
 
-let DATA = { curso: "", horario: [], examenes: [], trabajos: [] };
+let DATA = { curso: "", horario: [], examenes: [], trabajos: [], festivos: [] };
 let CONNECTED = false;
 
 // Cuatrimestre seleccionado en la vista de calendario (1 o 2). Por defecto,
@@ -70,7 +70,8 @@ onSnapshot(docRef, snap => {
     curso: d.curso || "",
     horario: mapToArray(d.horario),
     examenes: mapToArray(d.examenes),
-    trabajos: mapToArray(d.trabajos)
+    trabajos: mapToArray(d.trabajos),
+    festivos: d.festivos || []
   };
   hideConnError();
   render();
@@ -403,7 +404,13 @@ function buildEventMap() {
   return map;
 }
 
-function monthGridHtml(mes, anio, eventMap) {
+function buildFestivoMap() {
+  const map = {};
+  (DATA.festivos || []).forEach(f => { if (f.fecha) map[f.fecha] = f.nombre || "Festivo"; });
+  return map;
+}
+
+function monthGridHtml(mes, anio, eventMap, festivoMap) {
   const first = new Date(anio, mes - 1, 1);
   const startOffset = (first.getDay() + 6) % 7; // lunes = 0
   const diasEnMes = new Date(anio, mes, 0).getDate();
@@ -416,11 +423,14 @@ function monthGridHtml(mes, anio, eventMap) {
   for (let d = 1; d <= diasEnMes; d++) {
     const dateStr = `${anio}-${pad2(mes)}-${pad2(d)}`;
     const evs = eventMap[dateStr] || [];
+    const festivo = festivoMap[dateStr];
     const esHoy = dateStr === hoyStr;
     const dots = evs.slice(0, 3).map(e => `<span class="mc-dot ${e.tipo}"></span>`).join("");
-    const tip = evs.map(e => (e.tipo === "examen" ? "Examen: " : "Entrega: ") + e.titulo).join(" · ");
+    const tips = evs.map(e => (e.tipo === "examen" ? "Examen: " : "Entrega: ") + e.titulo);
+    if (festivo) tips.unshift("Festivo: " + festivo);
+    const tip = tips.join(" · ");
     celdas += `
-      <div class="mc-cell ${esHoy ? "today" : ""} ${evs.length ? "has-event" : ""}" data-date="${dateStr}" ${tip ? `title="${escapeAttr(tip)}"` : ""}>
+      <div class="mc-cell ${esHoy ? "today" : ""} ${evs.length ? "has-event" : ""} ${festivo ? "festivo" : ""}" data-date="${dateStr}" ${tip ? `title="${escapeAttr(tip)}"` : ""}>
         <span class="mc-num">${d}</span>
         <span class="mc-dots">${dots}</span>
       </div>`;
@@ -443,6 +453,7 @@ function monthGridHtml(mes, anio, eventMap) {
 function renderCuatrimestre() {
   const el = document.getElementById("view-cuatrimestre");
   const eventMap = buildEventMap();
+  const festivoMap = buildFestivoMap();
   const meses = mesesCuatri(CUATRI_SEL);
 
   const toggle = `
@@ -453,10 +464,11 @@ function renderCuatrimestre() {
     <div class="cuatri-legend">
       <span><span class="mc-dot examen"></span> Examen</span>
       <span><span class="mc-dot trabajo"></span> Entrega de trabajo</span>
+      <span><span class="mc-dot festivo"></span> Festivo / no lectivo</span>
     </div>
   `;
 
-  const grids = meses.map(({ m, y }) => monthGridHtml(m, y, eventMap)).join("");
+  const grids = meses.map(({ m, y }) => monthGridHtml(m, y, eventMap, festivoMap)).join("");
   el.innerHTML = toggle + `<div class="months-wrap">${grids}</div>`;
 
   el.querySelectorAll(".cuatri-toggle button").forEach(btn => {

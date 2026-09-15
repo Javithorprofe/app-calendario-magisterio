@@ -1100,6 +1100,16 @@ input[type="color"].mf-input {
 .mc-dot.examen { background: var(--danger); }
 .mc-dot.trabajo { background: var(--accent); }
 
+.mc-cell.festivo {
+  background: rgba(239, 68, 68, .08);
+}
+.mc-cell.festivo .mc-num {
+  color: var(--danger);
+  opacity: .75;
+  text-decoration: line-through;
+}
+.mc-dot.festivo { background: var(--text-dim); }
+
 /* Notas */
 .grade-pill {
   font-size: .78rem;

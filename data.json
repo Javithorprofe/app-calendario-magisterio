@@ -64,5 +64,19 @@
   "examenes": [
     { "id": "ex_ing_mock", "asignatura": "Inglés I", "fecha": "2026-10-08", "hora": "10:00", "aula": "A001", "notas": "Mock Teoría y Práctica (30 marks) - última semana con Marta Sordo" }
   ],
-  "trabajos": []
+  "trabajos": [],
+  "festivos": [
+    { "fecha": "2026-10-12", "nombre": "Fiesta Nacional de España" },
+    { "fecha": "2026-10-30", "nombre": "No lectivo (puente)" },
+    { "fecha": "2026-11-02", "nombre": "Festivo nacional (traslado)" },
+    { "fecha": "2026-12-04", "nombre": "San Nicolás de Bari (patrón)" },
+    { "fecha": "2026-12-07", "nombre": "Día de la Constitución (traslado)" },
+    { "fecha": "2026-12-08", "nombre": "Inmaculada Concepción" },
+    { "fecha": "2026-12-09", "nombre": "Patrón de la Facultad" },
+    { "fecha": "2026-12-21", "nombre": "No lectivo (preparación de exámenes)" },
+    { "fecha": "2026-12-22", "nombre": "No lectivo (preparación de exámenes)" },
+    { "fecha": "2026-12-23", "nombre": "No lectivo (preparación de exámenes)" },
+    { "fecha": "2026-12-24", "nombre": "Vacaciones de Navidad" },
+    { "fecha": "2026-12-25", "nombre": "Vacaciones de Navidad" }
+  ]
 }

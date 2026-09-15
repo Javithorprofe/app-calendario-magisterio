@@ -33,11 +33,11 @@ const ref = doc(db, DOC_COLLECTION, DOC_ID);
 const snap = await getDoc(ref);
 
 if (!snap.exists()) {
-  await setDoc(ref, { curso: raw.curso ?? "", ...sections });
+  await setDoc(ref, { curso: raw.curso ?? "", festivos: raw.festivos ?? [], ...sections });
   console.log("✔ Documento creado en Firestore con", SECTIONS.map(s => `${Object.keys(sections[s]).length} ${s}`).join(", "));
 } else {
   const current = snap.data();
-  const payload = { curso: raw.curso ?? "" };
+  const payload = { curso: raw.curso ?? "", festivos: raw.festivos ?? [] };
 
   for (const section of SECTIONS) {
     const items = sections[section];
