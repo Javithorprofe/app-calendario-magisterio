@@ -49,7 +49,7 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getFirestore(fbApp);
 const docRef = doc(db, DOC_COLLECTION, DOC_ID);
 
-let DATA = { curso: "", horario: [], examenes: [], trabajos: [], festivos: [] };
+let DATA = { curso: "", horario: [], examenes: [], trabajos: [], festivos: [], profesores: [] };
 let CONNECTED = false;
 
 // Cuatrimestre seleccionado en la vista de calendario (1 o 2). Por defecto,
@@ -71,7 +71,8 @@ onSnapshot(docRef, snap => {
     horario: mapToArray(d.horario),
     examenes: mapToArray(d.examenes),
     trabajos: mapToArray(d.trabajos),
-    festivos: d.festivos || []
+    festivos: d.festivos || [],
+    profesores: d.profesores || []
   };
   hideConnError();
   render();
@@ -262,6 +263,28 @@ function subjectLegendHtml() {
   return `<div class="subject-legend">${chips}</div>`;
 }
 
+// Tabla de profesores y grupo de prácticas por asignatura, debajo del horario.
+function profesoresTableHtml() {
+  const filas = DATA.profesores || [];
+  if (filas.length === 0) return "";
+  const rows = filas.map(p => `
+    <tr>
+      <td>${escapeHtml(p.asignatura)}</td>
+      <td>${escapeHtml(p.profesores)}</td>
+      <td>${escapeHtml(p.grupo)}</td>
+    </tr>
+  `).join("");
+  return `
+    <div class="profesores-wrap">
+      <h3 class="profesores-title">Profesores y grupo</h3>
+      <table class="profesores-table">
+        <thead><tr><th>Asignatura</th><th>Profesor/a</th><th>Grupo</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
 function renderHorario() {
   const el = document.getElementById("view-horario");
   const addBtn = `<button class="add-btn" id="addClase">+ Añadir clase</button>`;
@@ -285,7 +308,7 @@ function renderHorario() {
   const clasesSemana = (DATA.horario || []).filter(c => claseAplicaSemana(c, WEEK_START));
 
   if (clasesSemana.length === 0) {
-    el.innerHTML = addBtn + nav + `<div class="empty-state">No hay clases esta semana.</div>` + subjectLegendHtml();
+    el.innerHTML = addBtn + nav + `<div class="empty-state">No hay clases esta semana.</div>` + subjectLegendHtml() + profesoresTableHtml();
     wireHorarioControls();
     return;
   }
@@ -348,7 +371,7 @@ function renderHorario() {
         ${cols}
       </div>
     </div>
-  ` + subjectLegendHtml();
+  ` + subjectLegendHtml() + profesoresTableHtml();
 
   wireHorarioControls();
 }

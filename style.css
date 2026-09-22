@@ -725,6 +725,48 @@ input[type="color"].mf-input {
   flex-shrink: 0;
 }
 
+/* Tabla de profesores y grupo, debajo del horario semanal */
+.profesores-wrap {
+  margin-top: 22px;
+}
+
+.profesores-title {
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-dim);
+  margin: 0 0 8px;
+}
+
+.profesores-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: .82rem;
+  box-shadow: var(--shadow);
+}
+
+.profesores-table th, .profesores-table td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profesores-table th {
+  color: var(--text-dim);
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  background: var(--surface-2);
+}
+
+.profesores-table tr:last-child td {
+  border-bottom: none;
+}
+
 /* Calendario del cuatrimestre */
 .cuatri-toggle {
   display: flex;

@@ -3,17 +3,38 @@
   "horario": [
     { "id": "cl_org_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
 
-    { "id": "cl_paz_mar", "dia": "Martes", "inicio": "08:00", "fin": "09:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
     { "id": "cl_cur_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
 
-    { "id": "cl_paz_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
     { "id": "cl_org_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
 
     { "id": "cl_ing_teoria_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría" },
 
     { "id": "cl_org_vie", "dia": "Viernes", "inicio": "08:00", "fin": "09:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
     { "id": "cl_cur_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
-    { "id": "cl_paz_vie", "dia": "Viernes", "inicio": "12:00", "fin": "14:00", "asignatura": "Educación para la Paz y la Igualdad", "aula": "A001" },
+
+    { "id": "epi_s1_mar", "dia": "Martes", "inicio": "08:00", "fin": "10:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría - Presentación", "repite": "puntual", "fecha": "2026-09-15" },
+    { "id": "epi_s1_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-16" },
+    { "id": "epi_s1_vie", "dia": "Viernes", "inicio": "12:00", "fin": "14:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-18" },
+
+    { "id": "epi_s2_mar", "dia": "Martes", "inicio": "08:00", "fin": "10:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-09-22" },
+    { "id": "epi_s2_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-23" },
+
+    { "id": "epi_s3_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-30" },
+    { "id": "epi_s3_vie", "dia": "Viernes", "inicio": "12:00", "fin": "14:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-02" },
+
+    { "id": "epi_s4_mar", "dia": "Martes", "inicio": "08:00", "fin": "10:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-06" },
+    { "id": "epi_s4_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-07" },
+
+    { "id": "epi_s5_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-14" },
+    { "id": "epi_s5_vie", "dia": "Viernes", "inicio": "12:00", "fin": "14:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-16" },
+
+    { "id": "epi_s6_mar", "dia": "Martes", "inicio": "08:00", "fin": "10:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-20" },
+    { "id": "epi_s6_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-21" },
+
+    { "id": "epi_s7_mar", "dia": "Martes", "inicio": "08:00", "fin": "10:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría - fin bloque Psicología", "repite": "puntual", "fecha": "2026-10-27" },
+    { "id": "epi_s7_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría - comienzo bloque Pedagogía", "repite": "puntual", "fecha": "2026-10-28" },
+
+    { "id": "epi_s14_vie", "dia": "Viernes", "inicio": "12:00", "fin": "14:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Fin de la asignatura", "repite": "puntual", "fecha": "2026-12-18" },
 
     { "id": "cl_ing_s1_lun", "dia": "Lunes", "inicio": "12:00", "fin": "14:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Presentación del curso (Teoría y Práctica)", "repite": "puntual", "fecha": "2026-09-14" },
     { "id": "cl_ing_s1_mie", "dia": "Miércoles", "inicio": "08:00", "fin": "10:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Práctica (grupos 1 y 2 juntos)", "repite": "puntual", "fecha": "2026-09-16" },
@@ -65,6 +86,13 @@
   ],
   "trabajos": [
     { "id": "tr_ope_reto1", "asignatura": "Organización y Planificación Escolar", "titulo": "Reto 1: Construyendo futuro", "fechaEntrega": "2026-10-07", "notas": "Cierre en Moodle: mié 7 oct, 23:59. Fechas clave: inicio 21 sep · muestra de moodboards y presentaciones 7-9 oct · entrega final 14 oct." }
+  ],
+  "profesores": [
+    { "asignatura": "Currículo y Sistema Educativo", "profesores": "Pendiente", "grupo": "Pendiente" },
+    { "asignatura": "Organización y Planificación Escolar", "profesores": "Pendiente", "grupo": "Pendiente" },
+    { "asignatura": "Educación para la Paz y la Igualdad", "profesores": "Valle Flores y Víctor González", "grupo": "Subgrupo 1" },
+    { "asignatura": "TIC Aplicadas a la Educación", "profesores": "Ada Freitas Cortina y Vanesa Gallego Lema", "grupo": "Subgrupo 2" },
+    { "asignatura": "Inglés I", "profesores": "Marta Sordo (semanas 1-4) y Paula de Santiago (desde semana 5)", "grupo": "Subgrupo 2" }
   ],
   "festivos": [
     { "fecha": "2026-10-12", "nombre": "Fiesta Nacional de España" },
