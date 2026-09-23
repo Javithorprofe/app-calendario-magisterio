@@ -9,7 +9,7 @@
 
     { "id": "cl_ing_teoria_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría" },
 
-    { "id": "cl_org_vie", "dia": "Viernes", "inicio": "08:00", "fin": "09:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
+    { "id": "cl_org_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
     { "id": "cl_cur_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
 
     { "id": "epi_s1_mar", "dia": "Martes", "inicio": "08:00", "fin": "10:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría - Presentación", "repite": "puntual", "fecha": "2026-09-15" },
