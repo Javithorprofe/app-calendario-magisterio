@@ -1,11 +1,45 @@
 {
   "curso": "1º Educación Primaria - Grupo 1",
   "horario": [
-    { "id": "cl_cur_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
-
     { "id": "cl_ing_teoria_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría" },
 
-    { "id": "cl_cur_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
+    { "id": "cur_s1_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S1 · Presentación + inicio Bloque I · Presentación del proyecto", "repite": "puntual", "fecha": "2026-09-15" },
+    { "id": "cur_s1_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S1 · Presentación + inicio Bloque I · Presentación del proyecto", "repite": "puntual", "fecha": "2026-09-18" },
+
+    { "id": "cur_s2_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S2 · Bloque I: escuela institución socializadora · Fase 1 Contextualización", "repite": "puntual", "fecha": "2026-09-22" },
+    { "id": "cur_s2_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S2 · Bloque I: escuela institución socializadora · Fase 1 Contextualización", "repite": "puntual", "fecha": "2026-09-25" },
+
+    { "id": "cur_s3_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S3 · Bloque I: sistema educativo español, profesión docente · Revisar contextualización y feedback", "repite": "puntual", "fecha": "2026-09-29" },
+    { "id": "cur_s3_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S3 · Bloque I: sistema educativo español, profesión docente · Revisar contextualización y feedback", "repite": "puntual", "fecha": "2026-10-02" },
+
+    { "id": "cur_s4_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S4 · Bloque II: currículo, concepto y funciones · Fase 2 Interpretación curricular", "repite": "puntual", "fecha": "2026-10-06" },
+    { "id": "cur_s4_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S4 · Bloque II: currículo, concepto y funciones · Fase 2 Interpretación curricular", "repite": "puntual", "fecha": "2026-10-09" },
+
+    { "id": "cur_s5_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S5 · Bloque II: teorías y modelos curriculares · Taller selección y justificación de elementos curriculares", "repite": "puntual", "fecha": "2026-10-13" },
+    { "id": "cur_s5_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S5 · Bloque II: teorías y modelos curriculares · Taller selección y justificación de elementos curriculares", "repite": "puntual", "fecha": "2026-10-16" },
+
+    { "id": "cur_s6_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S6 · Bloque III: diseño curricular · Fase 3 Diseño inicial", "repite": "puntual", "fecha": "2026-10-20" },
+    { "id": "cur_s6_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S6 · Bloque III: diseño curricular · Fase 3 Diseño inicial", "repite": "puntual", "fecha": "2026-10-23" },
+
+    { "id": "cur_s7_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S7 · Bloque III: competencias, objetivos, saberes y criterios · Revisión de decisiones metodológicas", "repite": "puntual", "fecha": "2026-10-27" },
+
+    { "id": "cur_s8_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S8 · Bloque III: coherencia y alineamiento curricular · Diseño de experiencias/actividades principales", "repite": "puntual", "fecha": "2026-11-06" },
+
+    { "id": "cur_s9_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S9 · Bloque III: planificación educativa · Fase 4 Organización", "repite": "puntual", "fecha": "2026-11-10" },
+    { "id": "cur_s9_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S9 · Bloque III: planificación educativa · Fase 4 Organización", "repite": "puntual", "fecha": "2026-11-13" },
+
+    { "id": "cur_s10_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S10 · Bloque III: metodología · Fase 5 Inclusión y DUA", "repite": "puntual", "fecha": "2026-11-17" },
+    { "id": "cur_s10_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S10 · Bloque III: metodología · Fase 5 Inclusión y DUA", "repite": "puntual", "fecha": "2026-11-20" },
+
+    { "id": "cur_s11_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S11 · Bloque III: recursos y materiales · Fase 6 Evaluación", "repite": "puntual", "fecha": "2026-11-24" },
+    { "id": "cur_s11_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S11 · Bloque III: recursos y materiales · Fase 6 Evaluación", "repite": "puntual", "fecha": "2026-11-27" },
+
+    { "id": "cur_s12_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S12 · Bloque III: evaluación · Fase 7 Revisión entre iguales", "repite": "puntual", "fecha": "2026-12-01" },
+
+    { "id": "cur_s13_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S13 · Bloque III→IV: taller de coherencia global e innovación · Revisión y reflexión del proyecto", "repite": "puntual", "fecha": "2026-12-11" },
+
+    { "id": "cur_s14_mar", "dia": "Martes", "inicio": "12:00", "fin": "15:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S14 · Presentación de proyectos y Evaluación · Fase 8 Entrega/cierre y defensa", "repite": "puntual", "fecha": "2026-12-15" },
+    { "id": "cur_s14_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S14 · Presentación de proyectos y Evaluación · Fase 8 Entrega/cierre y defensa", "repite": "puntual", "fecha": "2026-12-18" },
 
     { "id": "org_s1_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-09-16" },
     { "id": "org_s1_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-09-18" },
@@ -121,7 +155,7 @@
     { "id": "tr_ope_reto1", "asignatura": "Organización y Planificación Escolar", "titulo": "Reto 1: Construyendo futuro", "fechaEntrega": "2026-10-07", "notas": "Cierre en Moodle: mié 7 oct, 23:59. Fechas clave: inicio 21 sep · muestra de moodboards y presentaciones 7-9 oct · entrega final 14 oct." }
   ],
   "profesores": [
-    { "asignatura": "Currículo y Sistema Educativo", "profesores": "Pendiente", "grupo": "Pendiente" },
+    { "asignatura": "Currículo y Sistema Educativo", "profesores": "Pendiente", "grupo": "Grupo 1 (sin subgrupos)" },
     { "asignatura": "Organización y Planificación Escolar", "profesores": "Mónica Gutiérrez Ortega", "grupo": "Subgrupo 1" },
     { "asignatura": "Educación para la Paz y la Igualdad", "profesores": "Valle Flores y Víctor González", "grupo": "Subgrupo 1" },
     { "asignatura": "TIC Aplicadas a la Educación", "profesores": "Ada Freitas Cortina y Vanesa Gallego Lema", "grupo": "Subgrupo 2" },
