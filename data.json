@@ -152,10 +152,11 @@
     { "id": "ex_ing_mock", "asignatura": "Inglés I", "fecha": "2026-10-08", "hora": "10:00", "aula": "A001", "notas": "Mock Teoría y Práctica (30 marks) - última semana con Marta Sordo" }
   ],
   "trabajos": [
-    { "id": "tr_ope_reto1", "asignatura": "Organización y Planificación Escolar", "titulo": "Reto 1: Construyendo futuro", "fechaEntrega": "2026-10-07", "notas": "Cierre en Moodle: mié 7 oct, 23:59. Fechas clave: inicio 21 sep · muestra de moodboards y presentaciones 7-9 oct · entrega final 14 oct." }
+    { "id": "tr_ope_reto1", "asignatura": "Organización y Planificación Escolar", "titulo": "Reto 1: Construyendo futuro", "fechaEntrega": "2026-10-07", "notas": "Cierre en Moodle: mié 7 oct, 23:59. Fechas clave: inicio 21 sep · muestra de moodboards y presentaciones 7-9 oct · entrega final 14 oct." },
+    { "id": "tr_cur_proyecto", "asignatura": "Currículo y Sistema Educativo", "titulo": "Proyecto «Del currículo al aula» (propuesta didáctica)", "fechaEntrega": "2026-12-15", "notas": "Vale el 60% de la nota final (obligatorio, hay que aprobarlo). Entrega/cierre y defensa en la semana 14 (martes 15 y viernes 18 dic). Fases: 1 Contextualización (S2) · 2 Interpretación curricular (S4) · 3 Diseño inicial (S6) · 4 Organización (S9) · 5 Inclusión y DUA (S10) · 6 Evaluación (S11) · 7 Revisión entre iguales (S12) · 8 Entrega y defensa (S14)." }
   ],
   "profesores": [
-    { "asignatura": "Currículo y Sistema Educativo", "profesores": "Pendiente", "grupo": "Grupo 1 (sin subgrupos)" },
+    { "asignatura": "Currículo y Sistema Educativo", "profesores": "Inés Ruiz Requies (responsable), Eduardo Fernández Rodríguez y Cristina Pascual Arias", "grupo": "Grupo 1 (sin subgrupos)" },
     { "asignatura": "Organización y Planificación Escolar", "profesores": "Mónica Gutiérrez Ortega", "grupo": "Subgrupo 1" },
     { "asignatura": "Educación para la Paz y la Igualdad", "profesores": "Valle Flores y Víctor González", "grupo": "Subgrupo 1" },
     { "asignatura": "TIC Aplicadas a la Educación", "profesores": "Ada Freitas Cortina y Vanesa Gallego Lema", "grupo": "Subgrupo 2" },
