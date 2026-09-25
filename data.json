@@ -1,16 +1,49 @@
 {
   "curso": "1º Educación Primaria - Grupo 1",
   "horario": [
-    { "id": "cl_org_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
-
     { "id": "cl_cur_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
-
-    { "id": "cl_org_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
 
     { "id": "cl_ing_teoria_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría" },
 
-    { "id": "cl_org_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "aula": "A001" },
     { "id": "cl_cur_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "aula": "A001" },
+
+    { "id": "org_s1_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-09-16" },
+    { "id": "org_s1_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-09-18" },
+
+    { "id": "org_s2_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-09-21" },
+    { "id": "org_s2_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-09-23" },
+
+    { "id": "org_s3_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-09-28" },
+    { "id": "org_s3_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-02" },
+
+    { "id": "org_s4_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-10-05" },
+    { "id": "org_s4_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-07" },
+
+    { "id": "org_s5_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-16" },
+
+    { "id": "org_s6_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-10-19" },
+    { "id": "org_s6_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-10-21" },
+
+    { "id": "org_s7_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-10-26" },
+    { "id": "org_s7_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-10-28" },
+
+    { "id": "org_s8_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-06" },
+
+    { "id": "org_s9_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-11-09" },
+    { "id": "org_s9_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-11" },
+
+    { "id": "org_s10_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-11-16" },
+    { "id": "org_s10_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-20" },
+
+    { "id": "org_s11_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-11-23" },
+    { "id": "org_s11_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-11-25" },
+
+    { "id": "org_s12_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-11-30" },
+
+    { "id": "org_s13_vie", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "repite": "puntual", "fecha": "2026-12-11" },
+
+    { "id": "org_s14_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-12-14" },
+    { "id": "org_s14_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-12-16" },
 
     { "id": "epi_s1_mar", "dia": "Martes", "inicio": "08:00", "fin": "10:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría - Presentación", "repite": "puntual", "fecha": "2026-09-15" },
     { "id": "epi_s1_mie", "dia": "Miércoles", "inicio": "10:00", "fin": "12:00", "asignatura": "Educación para la Paz y la Igualdad", "notas": "Teoría", "repite": "puntual", "fecha": "2026-09-16" },
@@ -89,7 +122,7 @@
   ],
   "profesores": [
     { "asignatura": "Currículo y Sistema Educativo", "profesores": "Pendiente", "grupo": "Pendiente" },
-    { "asignatura": "Organización y Planificación Escolar", "profesores": "Pendiente", "grupo": "Subgrupo 1" },
+    { "asignatura": "Organización y Planificación Escolar", "profesores": "Mónica Gutiérrez Ortega", "grupo": "Subgrupo 1" },
     { "asignatura": "Educación para la Paz y la Igualdad", "profesores": "Valle Flores y Víctor González", "grupo": "Subgrupo 1" },
     { "asignatura": "TIC Aplicadas a la Educación", "profesores": "Ada Freitas Cortina y Vanesa Gallego Lema", "grupo": "Subgrupo 2" },
     { "asignatura": "Inglés I", "profesores": "Marta Sordo (semanas 1-4) y Paula de Santiago (desde semana 5)", "grupo": "Subgrupo 2" }
