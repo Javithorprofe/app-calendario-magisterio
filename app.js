@@ -49,7 +49,7 @@ const fbApp = initializeApp(firebaseConfig);
 const db = getFirestore(fbApp);
 const docRef = doc(db, DOC_COLLECTION, DOC_ID);
 
-let DATA = { curso: "", horario: [], examenes: [], trabajos: [], festivos: [], profesores: [] };
+let DATA = { curso: "", horario: [], examenes: [], trabajos: [], festivos: [], eventosCalendario: [], profesores: [] };
 let CONNECTED = false;
 
 // Cuatrimestre seleccionado en la vista de calendario (1 o 2). Por defecto,
@@ -72,6 +72,7 @@ onSnapshot(docRef, snap => {
     examenes: mapToArray(d.examenes),
     trabajos: mapToArray(d.trabajos),
     festivos: d.festivos || [],
+    eventosCalendario: d.eventosCalendario || [],
     profesores: d.profesores || []
   };
   hideConnError();
@@ -435,6 +436,10 @@ function buildEventMap() {
   });
   DATA.trabajos.forEach(t => {
     (map[t.fechaEntrega] = map[t.fechaEntrega] || []).push({ tipo: "trabajo", titulo: `${t.asignatura}: ${t.titulo}` });
+  });
+  // Eventos que solo se ven en el calendario (p. ej. exámenes oficiales de enero)
+  (DATA.eventosCalendario || []).forEach(e => {
+    if (e.fecha) (map[e.fecha] = map[e.fecha] || []).push({ tipo: "examen", titulo: e.nombre || "Examen" });
   });
   return map;
 }
