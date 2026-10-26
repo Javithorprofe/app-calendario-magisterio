@@ -206,6 +206,51 @@ const CUATRIMESTRES = [
   { inicioSemana1: "2026-09-14", finUltimaSemana: "2026-12-14" } // 1er cuatrimestre: semanas 1-14
 ];
 
+// Mi subgrupo de prácticas en cada asignatura. Las clases con campo
+// "subgrupo" ("1" o "2") solo se muestran si coinciden con la vista elegida;
+// las que no lo llevan (teoría, todo el grupo) salen siempre.
+const MI_SUBGRUPO = {
+  "Inglés I": "2",
+  "TIC Aplicadas a la Educación": "2",
+  "Educación para la Paz y la Igualdad": "1",
+  "Organización y Planificación Escolar": "1"
+};
+
+// Vista del horario: "mio" (por defecto) | "1" | "2". Se recuerda en este dispositivo.
+let VISTA_SUBGRUPO = (() => {
+  try {
+    const v = localStorage.getItem("vistaSubgrupo");
+    return (v === "1" || v === "2") ? v : "mio";
+  } catch (e) { return "mio"; }
+})();
+
+function setVistaSubgrupo(v) {
+  VISTA_SUBGRUPO = v;
+  try { localStorage.setItem("vistaSubgrupo", v); } catch (e) { /* sin almacenamiento */ }
+  renderHorario();
+}
+
+function claseVisibleEnVista(c) {
+  if (!c.subgrupo) return true;
+  const objetivo = VISTA_SUBGRUPO === "mio" ? MI_SUBGRUPO[c.asignatura] : VISTA_SUBGRUPO;
+  return objetivo === undefined || String(c.subgrupo) === objetivo;
+}
+
+function vistaBannerHtml() {
+  if (VISTA_SUBGRUPO === "mio") return "";
+  return `<div class="vista-banner">Viendo el horario del <b>subgrupo ${VISTA_SUBGRUPO}</b> · <button type="button" data-vista="mio">volver a mi horario</button></div>`;
+}
+
+function vistaSubgrupoHtml() {
+  const op = (v, txt) => `<button type="button" class="${VISTA_SUBGRUPO === v ? "active" : ""}" data-vista="${v}">${txt}</button>`;
+  return `
+    <div class="vista-subgrupo">
+      <h3 class="profesores-title">Ver el horario de…</h3>
+      <div class="vista-subgrupo-btns">${op("mio", "Mi horario")}${op("1", "Subgrupo 1")}${op("2", "Subgrupo 2")}</div>
+      <div class="vista-subgrupo-nota">Solo cambia las prácticas; la teoría y las clases de todo el grupo salen igual.</div>
+    </div>`;
+}
+
 // ¿weekStart (lunes) cae dentro de algún cuatrimestre conocido?
 function semanaDentroDeCuatriConocido(weekStart) {
   return CUATRIMESTRES.some(c => {
@@ -306,10 +351,10 @@ function renderHorario() {
     </div>
   `;
 
-  const clasesSemana = (DATA.horario || []).filter(c => claseAplicaSemana(c, WEEK_START));
+  const clasesSemana = (DATA.horario || []).filter(c => claseVisibleEnVista(c) && claseAplicaSemana(c, WEEK_START));
 
   if (clasesSemana.length === 0) {
-    el.innerHTML = addBtn + nav + `<div class="empty-state">No hay clases esta semana.</div>` + subjectLegendHtml() + profesoresTableHtml();
+    el.innerHTML = addBtn + vistaBannerHtml() + nav + `<div class="empty-state">No hay clases esta semana.</div>` + subjectLegendHtml() + profesoresTableHtml() + vistaSubgrupoHtml();
     wireHorarioControls();
     return;
   }
@@ -364,7 +409,7 @@ function renderHorario() {
     cols += `<div class="day-col ${d === hoyStr ? "today" : ""}" style="height:${totalHoras * HOUR_HEIGHT}px">${bloques}${nowLine}</div>`;
   });
 
-  el.innerHTML = addBtn + nav + `
+  el.innerHTML = addBtn + vistaBannerHtml() + nav + `
     <div class="week-wrap">
       <div class="week-header" style="grid-template-columns:34px repeat(${dias.length},minmax(56px,1fr))">${header}</div>
       <div class="week-body" style="grid-template-columns:34px repeat(${dias.length},minmax(56px,1fr))">
@@ -372,7 +417,7 @@ function renderHorario() {
         ${cols}
       </div>
     </div>
-  ` + subjectLegendHtml() + profesoresTableHtml();
+  ` + subjectLegendHtml() + profesoresTableHtml() + vistaSubgrupoHtml();
 
   wireHorarioControls();
 }
@@ -400,6 +445,7 @@ function wireSwipe(el, onLeft, onRight) {
 
 function wireHorarioControls() {
   document.getElementById("addClase").addEventListener("click", () => openModal("horario", null));
+  document.querySelectorAll("[data-vista]").forEach(b => b.addEventListener("click", () => setVistaSubgrupo(b.dataset.vista)));
   document.getElementById("weekPrev").addEventListener("click", irSemanaAnterior);
   document.getElementById("weekNext").addEventListener("click", irSemanaSiguiente);
   document.getElementById("weekToday").addEventListener("click", irSemanaActual);
