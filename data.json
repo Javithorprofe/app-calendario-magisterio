@@ -7,8 +7,8 @@
     { "id": "cl_ing_t4_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-08" },
     { "id": "cl_ing_t6_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-22" },
     { "id": "cl_ing_t7_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-10-29" },
-    { "id": "cl_ing_t9_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría (Mock)", "repite": "puntual", "fecha": "2026-11-12" },
-    { "id": "cl_ing_t10_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-11-19" },
+    { "id": "cl_ing_t9_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Actividad en clase", "repite": "puntual", "fecha": "2026-11-12" },
+    { "id": "cl_ing_t10_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Mock exam (parte de Paula de Santiago)", "repite": "puntual", "fecha": "2026-11-19" },
     { "id": "cl_ing_t11_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-11-26" },
     { "id": "cl_ing_t12_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría", "repite": "puntual", "fecha": "2026-12-03" },
     { "id": "cl_ing_t14_jue", "dia": "Jueves", "inicio": "10:00", "fin": "12:00", "asignatura": "Inglés I", "aula": "A001", "notas": "Teoría (Mock)", "repite": "puntual", "fecha": "2026-12-17" },
@@ -74,7 +74,7 @@
 
 
     { "id": "org_s9_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-11-09" },
-    { "id": "org_s9_mie", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 1)", "subgrupo": "1", "repite": "puntual", "fecha": "2026-11-11" },
+    { "id": "org_s9_mie_visita", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Visita obligatoria: el director del CEIP Cristóbal Colón viene a la Facultad (todos los grupos, desdoble). Movida del 4 al 11 nov. Hora y fin sin confirmar.", "repite": "puntual", "fecha": "2026-11-11" },
 
     { "id": "org_s10_lun", "dia": "Lunes", "inicio": "10:00", "fin": "12:00", "asignatura": "Organización y Planificación Escolar", "notas": "Todo el grupo", "repite": "puntual", "fecha": "2026-11-16" },
 
@@ -213,7 +213,7 @@
     { "id": "org_s4_vie_p2", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 2)", "subgrupo": "2", "repite": "puntual", "fecha": "2026-10-09" },
     { "id": "org_s5_mié_p2", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 2)", "subgrupo": "2", "repite": "puntual", "fecha": "2026-10-14" },
     { "id": "org_s6_vie_p2", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 2)", "subgrupo": "2", "repite": "puntual", "fecha": "2026-10-23" },
-    { "id": "org_s8_mie_visita", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Visita obligatoria: el director del CEIP Cristóbal Colón viene a la Facultad (todos los grupos, desdoble). Empieza a las 12:00 en clase. El viernes 6 nov a las 8:00 no hay clase.", "repite": "puntual", "fecha": "2026-11-04" },
+    { "id": "org_s8_mie_charla", "dia": "Miércoles", "inicio": "12:00", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "notas": "Charla en clase (cambio de la profesora; la visita al CEIP Cristóbal Colón se mueve al 11 nov). El viernes 6 nov a las 8:00 no hay clase.", "repite": "puntual", "fecha": "2026-11-04" },
     { "id": "org_s9_vie_p2", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 2)", "subgrupo": "2", "repite": "puntual", "fecha": "2026-11-13" },
     { "id": "org_s10_mie_visita", "dia": "Miércoles", "inicio": "12:15", "fin": "14:00", "asignatura": "Organización y Planificación Escolar", "aula": "Colegio La Salle", "notas": "Visita obligatoria al Colegio La Salle (todos los grupos, desdoble). Quedar a las 12:15 en la puerta del patio del colegio (autobús línea 8). El viernes 20 nov a las 8:00 no hay clase.", "repite": "puntual", "fecha": "2026-11-18" },
     { "id": "org_s11_vie_p2", "dia": "Viernes", "inicio": "08:00", "fin": "10:00", "asignatura": "Organización y Planificación Escolar", "notas": "Práctica (subgrupo 2)", "subgrupo": "2", "repite": "puntual", "fecha": "2026-11-27" },
@@ -229,7 +229,8 @@
   ],
   "examenes": [
     { "id": "ex_cur_general", "asignatura": "Currículo y Sistema Educativo", "fecha": "2026-12-18", "notas": "Examen general (evaluación continua). En la guía, la prueba final pesa el 30% de la nota. Hora sin confirmar (la clase del viernes es 10-12)." },
-    { "id": "ex_ing_mock", "asignatura": "Inglés I", "fecha": "2026-10-08", "hora": "10:00", "aula": "A001", "notas": "Mock Teoría y Práctica (30 marks) - última semana con Marta Sordo" }
+    { "id": "ex_ing_mock", "asignatura": "Inglés I", "fecha": "2026-10-08", "hora": "10:00", "aula": "A001", "notas": "Mock Teoría y Práctica (30 marks) - última semana con Marta Sordo" },
+    { "id": "ex_ing_mock2", "asignatura": "Inglés I", "fecha": "2026-11-19", "hora": "10:00", "aula": "A001", "notas": "Mock exam de la parte de Paula de Santiago (hora y aula: las de la clase de teoría, sin confirmar)" }
   ],
   "trabajos": [
     { "id": "tr_ope_reto1", "asignatura": "Organización y Planificación Escolar", "titulo": "Reto 1: Construyendo futuro", "fechaEntrega": "2026-10-07", "notas": "Cierre en Moodle: mié 7 oct, 23:59. Fechas clave: inicio 21 sep · muestra de moodboards y presentaciones 7-9 oct · entrega final 14 oct." },
