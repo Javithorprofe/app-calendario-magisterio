@@ -33,6 +33,7 @@
 
     { "id": "cur_s7_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S7 · Bloque III: competencias, objetivos, saberes y criterios · Revisión de decisiones metodológicas", "repite": "puntual", "fecha": "2026-10-27" },
 
+    { "id": "cur_s8_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S8 · Bloque III: coherencia y alineamiento curricular · Clase añadida: el cronograma no la incluía", "repite": "puntual", "fecha": "2026-11-03" },
     { "id": "cur_s8_vie", "dia": "Viernes", "inicio": "10:00", "fin": "12:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S8 · Bloque III: coherencia y alineamiento curricular · Diseño de experiencias/actividades principales", "repite": "puntual", "fecha": "2026-11-06" },
 
     { "id": "cur_s9_mar", "dia": "Martes", "inicio": "12:00", "fin": "14:00", "asignatura": "Currículo y Sistema Educativo", "notas": "S9 · Bloque III: planificación educativa · Fase 4 Organización", "repite": "puntual", "fecha": "2026-11-10" },
